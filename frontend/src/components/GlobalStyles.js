@@ -39,7 +39,8 @@ export default createGlobalStyle`
       border: 0;
       box-sizing: border-box;
       vertical-align: baseline;
-      color: #36282e;
+      color: var(--main-font-color);
+      font-family: var(--main-font);
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
