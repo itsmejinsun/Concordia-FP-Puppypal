@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Menu from './Menu';
 import Signin from './Signin';
 
-const Nav = () => {
+const MenuNav = () => {
     return (
         <Wrapper>
             <Menu />
@@ -31,4 +31,4 @@ const Wrapper = styled.div`
     }
 `;
 
-export default Nav;
+export default MenuNav;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import GlobalStyles from './GlobalStyles';
 import MainNav from './MainNav';
@@ -8,6 +9,9 @@ import MenuNav from './MenuNav/index';
 import Home from './Home/index';
 
 const App = () => {
+    const { user } = useAuth0();
+    console.log(user);
+
     return (
         <BrowserRouter>
             <GlobalStyles />

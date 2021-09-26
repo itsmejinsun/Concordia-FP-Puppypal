@@ -1,19 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Signin = () => {
+    const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+
     return (
-        <Wrapper>
-            <Register>Register</Register>
-            <Login>
-                <span>or </span>
-                <button>Sign in</button>
-            </Login>
-        </Wrapper>
+        <>
+            {!isAuthenticated ? (
+                <Wrapper>
+                    <Register
+                        onClick={() =>
+                            loginWithRedirect({ screen_hint: 'signup' })
+                        }
+                    >
+                        Register
+                    </Register>
+                    <Login>
+                        <span>or </span>
+                        <button onClick={() => loginWithRedirect()}>
+                            Sign in
+                        </button>
+                    </Login>
+                </Wrapper>
+            ) : (
+                <Wrapper>
+                    <User>Hi, {user.given_name}</User>
+                    <Login>
+                        <button onClick={() => logout()}>Sign out</button>
+                    </Login>
+                </Wrapper>
+            )}
+        </>
     );
 };
 
 const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 `;
 
@@ -34,7 +60,7 @@ const Register = styled.button`
         color: var(--main-font-color);
         width: 60%;
         position: absolute;
-        top: -18px;
+        top: -20px;
         left: 20%;
         font-family: 'Architects Daughter', cursive;
         text-align: center;
@@ -94,6 +120,17 @@ const Login = styled.div`
             transform: rotate(2deg);
         }
     }
+`;
+
+const User = styled.p`
+    color: #fff;
+    background-color: var(--button-color-secondary);
+    width: 60%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
 `;
 
 export default Signin;
