@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Menu from './Menu';
+import Signin from './Signin';
 
 const Nav = () => {
     return (
         <Wrapper>
             <Menu />
+            <Signin />
         </Wrapper>
     );
 };
@@ -18,7 +20,11 @@ const Wrapper = styled.div`
     border-top-left-radius: 10px;
     font-family: var(--main-font);
     font-size: 1.25rem;
-    padding-top: 2rem;
+    /* padding-top: 3rem; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
     &.active {
         background-color: var(--nav-selected-color);
