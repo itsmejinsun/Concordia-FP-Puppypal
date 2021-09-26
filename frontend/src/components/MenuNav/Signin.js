@@ -126,7 +126,7 @@ const User = styled.p`
     color: #fff;
     background-color: var(--button-color-secondary);
     width: 60%;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border: none;
     border-radius: 10px;
     font-size: 1.1rem;

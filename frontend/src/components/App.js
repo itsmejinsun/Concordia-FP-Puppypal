@@ -10,7 +10,6 @@ import Home from './Home/index';
 
 const App = () => {
     const { user } = useAuth0();
-    console.log(user);
 
     return (
         <BrowserRouter>
