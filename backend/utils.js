@@ -18,4 +18,15 @@ const sendResponse = (res, status, data, message) => {
     return res.status(status).json({ status, data, message });
 };
 
-module.exports = { connectDb, sendResponse };
+// Function that will check if puppy info to register is validated
+const validatePuppyAdd = (res, puppyInfo) => {
+    const { name, birthday, gender, breed } = puppyInfo;
+
+    if (!name || !birthday || !gender || !breed) {
+        return 'Info is missing';
+    }
+
+    return;
+};
+
+module.exports = { connectDb, sendResponse, validatePuppyAdd };

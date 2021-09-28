@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 // import { useAuth0 } from '@auth0/auth0-react';
@@ -7,8 +7,10 @@ import GlobalStyles from './GlobalStyles';
 import MainNav from './MainNav';
 import MenuNav from './MenuNav/index';
 import Home from './Home/index';
+import PuppyList from './PuppyList/index';
 
 const App = () => {
+    const [isPuppyListOpen, setIsPuppyListOpen] = useState(false);
     // const { user } = useAuth0();
 
     return (
@@ -16,7 +18,7 @@ const App = () => {
             <GlobalStyles />
             <MainNav />
             <Main>
-                <MenuNav />
+                <MenuNav setIsPuppyListOpen={setIsPuppyListOpen} />
                 <MainContents>
                     <Switch>
                         <Route exact path="/">
@@ -25,6 +27,9 @@ const App = () => {
                     </Switch>
                 </MainContents>
             </Main>
+            {isPuppyListOpen && (
+                <PuppyList setIsPuppyListOpen={setIsPuppyListOpen} />
+            )}
         </BrowserRouter>
     );
 };

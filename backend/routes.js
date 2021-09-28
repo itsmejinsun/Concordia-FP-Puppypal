@@ -1,8 +1,9 @@
 const router = require('express').Router();
 
-const { addUser } = require('./handlers');
+const { addUser, addPuppy } = require('./handlers');
 
 router.post('/api/user', addUser);
+router.post('/api/user/:userId', addPuppy);
 
 router.get('*', (req, res) => {
     res.status(404).json({

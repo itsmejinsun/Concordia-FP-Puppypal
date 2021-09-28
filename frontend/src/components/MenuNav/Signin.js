@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Signin = ({ isSigninOpen }) => {
+const Signin = ({ isSigninOpen, setIsPuppyListOpen }) => {
     const { loginWithRedirect, user, isAuthenticated } = useAuth0();
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const Signin = ({ isSigninOpen }) => {
                 body: JSON.stringify(user),
             })
                 .then((res) => res.json())
-                .then((data) => console.log('data', data));
+                .then((data) => setIsPuppyListOpen(true));
         }
     }, [user]);
 
@@ -37,7 +37,18 @@ const Signin = ({ isSigninOpen }) => {
                         </button>
                     </SigninBtn>
                 </Wrapper>
-            ) : null}
+            ) : (
+                <Wrapper>
+                    <p>Hi, {user.given_name}</p>
+                    <button
+                        onClick={() => {
+                            setIsPuppyListOpen(true);
+                        }}
+                    >
+                        Puppy List
+                    </button>
+                </Wrapper>
+            )}
         </>
     );
 };

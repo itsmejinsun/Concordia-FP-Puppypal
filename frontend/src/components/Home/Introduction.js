@@ -43,6 +43,7 @@ const Introduction = () => {
 
 const Wrapper = styled.div`
     background-color: var(--main-background-color);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 2rem 4rem;
     margin-top: 2rem;
     border-radius: 5px;
