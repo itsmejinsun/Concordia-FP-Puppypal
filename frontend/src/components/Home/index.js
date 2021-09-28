@@ -14,10 +14,9 @@ const Home = () => {
 const Wrapper = styled.div`
     width: 100%;
     height: 100%;
-    padding: 2rem 0;
+    padding: 0 2rem;
     display: flex;
     justify-content: center;
-    align-items: center;
 `;
 
 export default Home;

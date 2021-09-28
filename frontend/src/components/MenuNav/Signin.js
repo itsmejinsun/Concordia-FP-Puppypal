@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Signin = () => {
-    const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+const Signin = ({ isSigninOpen }) => {
+    const { loginWithRedirect, user, isAuthenticated } = useAuth0();
+
+    useEffect(() => {
+        if (user) {
+            fetch('/api/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user),
+            })
+                .then((res) => res.json())
+                .then((data) => console.log('data', data));
+        }
+    }, [user]);
 
     return (
         <>
             {!isAuthenticated ? (
-                <Wrapper>
+                <Wrapper className={`${isSigninOpen}`}>
                     <Register
                         onClick={() =>
                             loginWithRedirect({ screen_hint: 'signup' })
@@ -16,68 +30,51 @@ const Signin = () => {
                     >
                         Register
                     </Register>
-                    <Login>
+                    <SigninBtn>
                         <span>or </span>
                         <button onClick={() => loginWithRedirect()}>
                             Sign in
                         </button>
-                    </Login>
+                    </SigninBtn>
                 </Wrapper>
-            ) : (
-                <Wrapper>
-                    <User>Hi, {user.given_name}</User>
-                    <Login>
-                        <button onClick={() => logout()}>Sign out</button>
-                    </Login>
-                </Wrapper>
-            )}
+            ) : null}
         </>
     );
 };
 
 const Wrapper = styled.div`
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    padding: 1rem;
+    margin: 1rem;
+    border-bottom: solid 2px var(--main-background-color);
+
+    &.true {
+        display: flex;
+    }
+
+    @media (min-width: 688px) {
+        display: flex;
+        margin-top: 6rem;
+        border-bottom: 0;
+    }
 `;
 
 const Register = styled.button`
     color: #fff;
     background-color: var(--button-color-secondary);
-    width: 60%;
-    padding: 0.5rem;
+    padding: 0.5rem 2.5rem;
     border: none;
     border-radius: 10px;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     letter-spacing: 0.5px;
     position: relative;
     cursor: pointer;
-
-    &:after {
-        content: 'woof!';
-        color: var(--main-font-color);
-        width: 60%;
-        position: absolute;
-        top: -20px;
-        left: 20%;
-        font-family: 'Architects Daughter', cursive;
-        text-align: center;
-        opacity: 0;
-        transform: rotate(-5deg);
-        transition: 0.2s ease-out;
-    }
-
-    &:hover {
-        &:after {
-            top: -24px;
-            opacity: 1;
-        }
-    }
 `;
 
-const Login = styled.div`
+const SigninBtn = styled.div`
     margin-top: 0.25rem;
     font-weight: 500;
 
@@ -120,17 +117,6 @@ const Login = styled.div`
             transform: rotate(2deg);
         }
     }
-`;
-
-const User = styled.p`
-    color: #fff;
-    background-color: var(--button-color-secondary);
-    width: 60%;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
 `;
 
 export default Signin;

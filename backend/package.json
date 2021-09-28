@@ -4,6 +4,7 @@
     "description": "This is the backend for Puppypal",
     "main": "server.js",
     "scripts": {
+        "start": "node server.js",
         "server": "nodemon server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -11,6 +12,8 @@
     "author": "Jinsun Kim <itsmejinsun@gmail.com>",
     "license": "ISC",
     "dependencies": {
+        "assert": "^2.0.0",
+        "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "mongodb": "^4.1.2",
         "morgan": "^1.10.0",

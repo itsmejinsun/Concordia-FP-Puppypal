@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const morgan = require('morgan');
 
@@ -10,6 +12,7 @@ app.use(express.json());
 app.use(morgan('tiny'));
 app.use(require('./routes'));
 
-const server = app.listen(PORT, () => {
+// Set server on port
+app.listen(PORT, () => {
     console.log('🌍 Listening on port ', PORT);
 });

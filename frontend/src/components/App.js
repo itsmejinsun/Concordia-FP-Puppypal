@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 
 import GlobalStyles from './GlobalStyles';
 import MainNav from './MainNav';
@@ -9,7 +9,7 @@ import MenuNav from './MenuNav/index';
 import Home from './Home/index';
 
 const App = () => {
-    const { user } = useAuth0();
+    // const { user } = useAuth0();
 
     return (
         <BrowserRouter>
@@ -30,14 +30,12 @@ const App = () => {
 };
 
 const Main = styled.div`
-    background-color: #fff;
-    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-        rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-    width: 95%;
-    height: 100%;
-    border-radius: 10px 10px 0 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+
+    @media (min-width: 688px) {
+        flex-direction: row;
+    }
 `;
 const MainContents = styled.div`
     flex: 10;

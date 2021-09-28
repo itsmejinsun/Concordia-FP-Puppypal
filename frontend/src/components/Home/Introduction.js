@@ -42,18 +42,45 @@ const Introduction = () => {
 };
 
 const Wrapper = styled.div`
-    width: 70%;
+    background-color: var(--main-background-color);
+    padding: 2rem 4rem;
+    margin-top: 2rem;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
+
+    @media (min-width: 688px) {
+        margin-top: 0;
+    }
+
+    @media (min-width: 992px) {
+        padding: 2rem 6rem;
+    }
+
+    @media (min-width: 1312px) {
+        padding: 2rem 8rem;
+    }
 `;
 
 const Contents = styled.div`
-    padding: 0 1rem;
+    padding: 1rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
 
-    .second {
-        text-align: right;
+    &:last-of-type {
+        flex-direction: column-reverse;
+    }
+
+    @media (min-width: 992px) {
+        flex-direction: row;
+
+        &:last-of-type {
+            flex-direction: row;
+        }
+        .second {
+            text-align: right;
+        }
     }
 `;
 
@@ -76,14 +103,15 @@ const Text = styled.div`
 
 const Img = styled.img`
     width: 150px;
-    margin: 0 1rem;
+    margin: 0 1.5rem;
 `;
 
 const Quote = styled.div`
-    background-color: var(--nav-background-color);
+    background-color: var(--nav-selected-color);
     text-align: center;
-    padding: 1rem;
-    margin: 1.5rem;
+    padding: 1.2rem;
+    margin: 1rem 2.5rem;
+    border-radius: 5px;
 `;
 
 export default Introduction;

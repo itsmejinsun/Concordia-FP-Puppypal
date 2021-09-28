@@ -10,61 +10,80 @@ import {
     faCheckSquare,
 } from '@fortawesome/free-solid-svg-icons';
 
-const Menu = () => {
+const Menu = ({ isMenuOpen }) => {
     return (
-        <ul>
-            <li>
-                <StyledLink exact activeClassName="active" to="/">
-                    <Icon className="icon">
-                        <FontAwesomeIcon icon={faHome} />
-                    </Icon>
-                    <p>HOME</p>
-                </StyledLink>
-            </li>
-            <li>
-                <StyledLink activeClassName="active" to="/daily">
-                    <Icon className="icon">
-                        <FontAwesomeIcon icon={faCheckSquare} />
-                    </Icon>
-                    <p>DAILY CARE</p>
-                </StyledLink>
-            </li>
-            <li>
-                <StyledLink activeClassName="active" to="/vaccine">
-                    <Icon className="icon">
-                        <FontAwesomeIcon icon={faSyringe} />
-                    </Icon>
-                    <p>VACCINATION</p>
-                </StyledLink>
-            </li>
-            <li>
-                <StyledLink activeClassName="active" to="/vetrecord">
-                    <Icon className="icon">
-                        <FontAwesomeIcon icon={faBriefcaseMedical} />
-                    </Icon>
-                    <p>VET RECORD</p>
-                </StyledLink>
-            </li>
-            <li>
-                <StyledLink activeClassName="active" to="/library">
-                    <Icon className="icon">
-                        <FontAwesomeIcon icon={faBook} />
-                    </Icon>
-                    <p>LIBRARY</p>
-                </StyledLink>
-            </li>
-        </ul>
+        <Wrapper className={`${isMenuOpen}`}>
+            <ul>
+                <li>
+                    <StyledLink exact activeClassName="active" to="/">
+                        <Icon className="icon">
+                            <FontAwesomeIcon icon={faHome} />
+                        </Icon>
+                        <p>HOME</p>
+                    </StyledLink>
+                </li>
+                <li>
+                    <StyledLink activeClassName="active" to="/daily">
+                        <Icon className="icon">
+                            <FontAwesomeIcon icon={faCheckSquare} />
+                        </Icon>
+                        <p>DAILY CARE</p>
+                    </StyledLink>
+                </li>
+                <li>
+                    <StyledLink activeClassName="active" to="/vaccine">
+                        <Icon className="icon">
+                            <FontAwesomeIcon icon={faSyringe} />
+                        </Icon>
+                        <p>VACCINATION</p>
+                    </StyledLink>
+                </li>
+                <li>
+                    <StyledLink activeClassName="active" to="/vetrecord">
+                        <Icon className="icon">
+                            <FontAwesomeIcon icon={faBriefcaseMedical} />
+                        </Icon>
+                        <p>VET RECORD</p>
+                    </StyledLink>
+                </li>
+                <li>
+                    <StyledLink activeClassName="active" to="/library">
+                        <Icon className="icon">
+                            <FontAwesomeIcon icon={faBook} />
+                        </Icon>
+                        <p>LIBRARY</p>
+                    </StyledLink>
+                </li>
+            </ul>
+        </Wrapper>
     );
 };
 
+const Wrapper = styled.div`
+    border-bottom: solid 2px var(--main-background-color);
+    display: none;
+    flex-direction: column;
+
+    &.true {
+        display: flex;
+    }
+
+    @media (min-width: 688px) {
+        display: flex;
+        margin-left: 1.5rem;
+        border-bottom: 0;
+    }
+`;
+
 const StyledLink = styled(NavLink)`
-    padding: 1.2rem;
+    padding: 1.1rem;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     transition: all 0.4s ease-in;
 
     &.active {
-        padding: 1.2rem 3rem;
+        padding: 1.1rem 3rem;
         background-color: var(--nav-selected-color);
 
         &:hover {
@@ -85,7 +104,7 @@ const StyledLink = styled(NavLink)`
         background-color: var(--nav-selected-color);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         transform: scale(1.075);
-        padding: 1.2rem 3rem;
+        padding: 1.1rem 3rem;
 
         .icon {
             opacity: 1;

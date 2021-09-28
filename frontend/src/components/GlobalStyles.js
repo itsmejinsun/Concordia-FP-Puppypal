@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 export default createGlobalStyle`
 :root {
 /* color */
-  --main-background-color: #f1f1f1;
+  --main-background-color: #f4f4f8;
   --nav-background-color: #fef0ed;
   --nav-selected-color: #f9d1c8;
   --main-font-color: #36282e;
@@ -48,7 +48,6 @@ export default createGlobalStyle`
       display: block;
   }
   body {
-      background-color: var(--main-background-color);
       line-height: 1;
       display: flex;
       justify-content: center;
@@ -71,13 +70,8 @@ export default createGlobalStyle`
   }
 
 #root {
-    max-width: 1800px;
-    width: 100vw;
-    height: 100vh;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* padding-top: 6rem; */
+    background-color: #fff;
+    max-width: 1600px;
+    min-width: 480px;
 }
 `;
