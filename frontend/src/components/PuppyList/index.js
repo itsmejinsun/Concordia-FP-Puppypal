@@ -4,13 +4,15 @@ import styled from 'styled-components';
 import SelectPuppy from './SelectPuppy';
 import AddPuppy from './AddPuppy';
 
-const PuppyList = ({ setIsPuppyListOpen }) => {
+const PuppyList = ({ setIsPuppyListOpen, setSelectedPuppy }) => {
     const [isAddPuppyOpen, setIsAddPuppyOpen] = useState(false);
 
     return (
         <Wrapper>
             <SelectPuppy
                 setIsPuppyListOpen={setIsPuppyListOpen}
+                setSelectedPuppy={setSelectedPuppy}
+                isAddPuppyOpen={isAddPuppyOpen}
                 setIsAddPuppyOpen={setIsAddPuppyOpen}
             />
             {isAddPuppyOpen ? (

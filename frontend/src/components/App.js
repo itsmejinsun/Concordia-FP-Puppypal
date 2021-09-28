@@ -11,7 +11,10 @@ import PuppyList from './PuppyList/index';
 
 const App = () => {
     const [isPuppyListOpen, setIsPuppyListOpen] = useState(false);
+    const [selectedPuppy, setSelectedPuppy] = useState();
     // const { user } = useAuth0();
+
+    console.log(selectedPuppy);
 
     return (
         <BrowserRouter>
@@ -28,7 +31,10 @@ const App = () => {
                 </MainContents>
             </Main>
             {isPuppyListOpen && (
-                <PuppyList setIsPuppyListOpen={setIsPuppyListOpen} />
+                <PuppyList
+                    setIsPuppyListOpen={setIsPuppyListOpen}
+                    setSelectedPuppy={setSelectedPuppy}
+                />
             )}
         </BrowserRouter>
     );

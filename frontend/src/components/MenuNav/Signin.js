@@ -17,6 +17,7 @@ const Signin = ({ isSigninOpen, setIsPuppyListOpen }) => {
                 .then((res) => res.json())
                 .then((data) => setIsPuppyListOpen(true));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     return (

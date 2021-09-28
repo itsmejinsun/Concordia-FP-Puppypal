@@ -16,8 +16,6 @@ const AddPuppy = ({ setIsAddPuppyOpen }) => {
     const [dogBreed, setDogBreed] = useState([]);
     const [puppyInfo, setPuppyInfo] = useState(initialPuppyInfo);
 
-    console.log(puppyInfo);
-
     useEffect(() => {
         fetch('https://dog.ceo/api/breeds/list/all')
             .then((res) => res.json())
@@ -201,6 +199,34 @@ const Register = styled.input`
     margin: 0.75rem 0;
     font-size: inherit;
     letter-spacing: 0.5px;
+
+    &:hover,
+    &:focus {
+        outline: none;
+        animation: shake 1s;
+        transform-origin: center;
+    }
+
+    @keyframes shake {
+        10%,
+        90% {
+            transform: rotate(-2deg);
+        }
+        20%,
+        80% {
+            transform: rotate(2deg);
+        }
+
+        30%,
+        50%,
+        70% {
+            transform: rotate(-2deg);
+        }
+        40%,
+        60% {
+            transform: rotate(2deg);
+        }
+    }
 `;
 
 export default AddPuppy;

@@ -76,4 +76,30 @@ const addPuppy = async (req, res) => {
     }
 };
 
-module.exports = { addUser, addPuppy };
+const getAllPuppy = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const db = await connectDb();
+
+        const findAllPuppy = await db
+            .collection(userId)
+            .find({ type: 'puppy' })
+            .toArray();
+
+        if (!findAllPuppy) {
+            sendResponse(res, 400, puppyInfo, 'Puppy not found');
+        }
+
+        return sendResponse(res, 200, findAllPuppy);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with get all puppy request'
+        );
+    }
+};
+
+module.exports = { addUser, addPuppy, getAllPuppy };
