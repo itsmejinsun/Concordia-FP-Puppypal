@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import Menu from './Menu';
-import Signin from './Signin';
+import UserStatus from './UserStatus/index';
 
 const MenuNav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +34,7 @@ const MenuNav = () => {
                 </button>
             </MenuBar>
             <Menu isMenuOpen={isMenuOpen} />
-            <Signin isSigninOpen={isSigninOpen} />
+            <UserStatus isSigninOpen={isSigninOpen} />
         </Wrapper>
     );
 };
