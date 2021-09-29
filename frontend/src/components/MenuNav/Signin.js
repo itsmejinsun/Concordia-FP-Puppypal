@@ -1,12 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Signin = ({ isSigninOpen, setIsPuppyListOpen }) => {
+import { PuppyContext } from '../PuppyContext';
+
+const Signin = ({ isSigninOpen }) => {
     const { loginWithRedirect, user, isAuthenticated } = useAuth0();
+    const { setIsPuppyListOpen, selectedPuppy } = useContext(PuppyContext);
+
+    const localItem = localStorage.getItem('id');
 
     useEffect(() => {
-        if (user) {
+        if (user && user.sub !== localItem) {
             fetch('/api/user', {
                 method: 'POST',
                 headers: {
@@ -15,7 +20,7 @@ const Signin = ({ isSigninOpen, setIsPuppyListOpen }) => {
                 body: JSON.stringify(user),
             })
                 .then((res) => res.json())
-                .then((data) => setIsPuppyListOpen(true));
+                .then(() => setIsPuppyListOpen(true));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
@@ -38,16 +43,18 @@ const Signin = ({ isSigninOpen, setIsPuppyListOpen }) => {
                         </button>
                     </SigninBtn>
                 </Wrapper>
+            ) : selectedPuppy ? (
+                <div>{selectedPuppy.name}</div>
             ) : (
-                <Wrapper>
-                    <p>Hi, {user.given_name}</p>
-                    <button
+                <Wrapper className={`${isSigninOpen}`}>
+                    <GreetTxt>Hi, {user.given_name}</GreetTxt>
+                    <PuppyList
                         onClick={() => {
                             setIsPuppyListOpen(true);
                         }}
                     >
                         Puppy List
-                    </button>
+                    </PuppyList>
                 </Wrapper>
             )}
         </>
@@ -130,5 +137,11 @@ const SigninBtn = styled.div`
         }
     }
 `;
+
+const GreetTxt = styled.p`
+    color: var(--button-color-secondary);
+    font-size: 1.2rem;
+`;
+const PuppyList = styled.button``;
 
 export default Signin;

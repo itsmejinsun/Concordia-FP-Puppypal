@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
-// import { useAuth0 } from '@auth0/auth0-react';
 
+import { PuppyContext } from './PuppyContext';
 import GlobalStyles from './GlobalStyles';
 import MainNav from './MainNav';
 import MenuNav from './MenuNav/index';
@@ -10,18 +10,14 @@ import Home from './Home/index';
 import PuppyList from './PuppyList/index';
 
 const App = () => {
-    const [isPuppyListOpen, setIsPuppyListOpen] = useState(false);
-    const [selectedPuppy, setSelectedPuppy] = useState();
-    // const { user } = useAuth0();
-
-    console.log(selectedPuppy);
+    const { isPuppyListOpen } = useContext(PuppyContext);
 
     return (
         <BrowserRouter>
             <GlobalStyles />
             <MainNav />
             <Main>
-                <MenuNav setIsPuppyListOpen={setIsPuppyListOpen} />
+                <MenuNav />
                 <MainContents>
                     <Switch>
                         <Route exact path="/">
@@ -30,12 +26,7 @@ const App = () => {
                     </Switch>
                 </MainContents>
             </Main>
-            {isPuppyListOpen && (
-                <PuppyList
-                    setIsPuppyListOpen={setIsPuppyListOpen}
-                    setSelectedPuppy={setSelectedPuppy}
-                />
-            )}
+            {isPuppyListOpen && <PuppyList />}
         </BrowserRouter>
     );
 };

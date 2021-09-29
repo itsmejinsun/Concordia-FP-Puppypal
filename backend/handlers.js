@@ -21,7 +21,7 @@ const addUser = async (req, res) => {
     try {
         const db = await connectDb();
 
-        const findUser = await db.collection(sub).findOne({ sub });
+        const findUser = await db.collection(sub).findOne({ _id: sub });
 
         if (!findUser) {
             const insertUser = await db.collection(sub).insertOne({

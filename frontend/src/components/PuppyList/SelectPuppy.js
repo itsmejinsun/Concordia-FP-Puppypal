@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const SelectPuppy = ({
-    setIsPuppyListOpen,
-    setSelectedPuppy,
-    isAddPuppyOpen,
-    setIsAddPuppyOpen,
-}) => {
+import { PuppyContext } from '../PuppyContext';
+
+const SelectPuppy = ({ isAddPuppyOpen, setIsAddPuppyOpen }) => {
     const { user, logout } = useAuth0();
     const [puppyList, setPuppyList] = useState();
+    const { setIsPuppyListOpen } = useContext(PuppyContext);
 
     useEffect(() => {
         fetch(`/api/puppy/${user.sub}`)
@@ -19,8 +17,14 @@ const SelectPuppy = ({
     }, [isAddPuppyOpen]);
 
     const handleClick = (puppy) => {
-        setSelectedPuppy(puppy);
+        localStorage.setItem('pup', puppy._id);
         setIsPuppyListOpen(false);
+    };
+
+    const handleLogOut = () => {
+        logout({ returnTo: window.location.origin });
+        localStorage.setItem('id', '');
+        localStorage.setItem('pup', '');
     };
 
     return (
@@ -49,11 +53,7 @@ const SelectPuppy = ({
             </SelectWrapper>
             <SingoutWrapper>
                 <p>Do you want to sign out?</p>
-                <button
-                    onClick={() => logout({ returnTo: window.location.origin })}
-                >
-                    Sign out
-                </button>
+                <button onClick={() => handleLogOut()}>Sign out</button>
             </SingoutWrapper>
         </Wrapper>
     );
@@ -110,17 +110,8 @@ const Button = styled.button`
     transition: transform 0.2s ease-in;
 
     &:hover {
-        animation: spin 1s;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    }
-
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
+        box-shadow: rgba(0, 0, 0, 0.5) 0 0.5rem 0.5rem -0.4rem;
+        transform: translateY(-0.25em);
     }
 `;
 

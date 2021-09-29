@@ -11,7 +11,7 @@ import {
 import Menu from './Menu';
 import Signin from './Signin';
 
-const MenuNav = ({ setIsPuppyListOpen }) => {
+const MenuNav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSigninOpen, setIsSigninOpen] = useState(false);
 
@@ -34,10 +34,7 @@ const MenuNav = ({ setIsPuppyListOpen }) => {
                 </button>
             </MenuBar>
             <Menu isMenuOpen={isMenuOpen} />
-            <Signin
-                isSigninOpen={isSigninOpen}
-                setIsPuppyListOpen={setIsPuppyListOpen}
-            />
+            <Signin isSigninOpen={isSigninOpen} />
         </Wrapper>
     );
 };
