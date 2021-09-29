@@ -9,18 +9,21 @@ const SelectPuppy = ({ isAddPuppyOpen, setIsAddPuppyOpen }) => {
     const [puppyList, setPuppyList] = useState();
     const { setIsPuppyListOpen } = useContext(PuppyContext);
 
+    // Fetch all puppy list
     useEffect(() => {
-        fetch(`/api/puppy/${user.sub}`)
+        fetch(`/api/${user.sub}/puppy`)
             .then((res) => res.json())
             .then((data) => setPuppyList(data.data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAddPuppyOpen]);
 
+    // Select puppy to manage
     const handleClick = (puppy) => {
         localStorage.setItem('pup', puppy._id);
         setIsPuppyListOpen(false);
     };
 
+    // User log out
     const handleLogOut = () => {
         logout({ returnTo: window.location.origin });
         localStorage.setItem('id', '');

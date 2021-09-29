@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('assert');
+const moment = require('moment');
 const { v4: uuidv4 } = require('uuid');
 
 const { connectDb, sendResponse, validatePuppyAdd } = require('./utils');
@@ -45,6 +46,7 @@ const addUser = async (req, res) => {
     }
 };
 
+// POST puppy data
 const addPuppy = async (req, res) => {
     const { userId } = req.params;
     const puppyInfo = req.body;
@@ -63,6 +65,7 @@ const addPuppy = async (req, res) => {
             ...puppyInfo,
             _id: uuidv4(),
             name: puppyInfo.name.toLowerCase(),
+            update_at: moment().format(),
         });
         assert.equal(true, insertPuppy.acknowledged);
 
@@ -76,6 +79,8 @@ const addPuppy = async (req, res) => {
     }
 };
 
+// GET all puppy data
+// 📌TODO: decide which data to send after avatar uploaded
 const getAllPuppy = async (req, res) => {
     const { userId } = req.params;
 
@@ -102,4 +107,30 @@ const getAllPuppy = async (req, res) => {
     }
 };
 
-module.exports = { addUser, addPuppy, getAllPuppy };
+// GET a single puppy data
+const getPuppy = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    try {
+        const db = await connectDb();
+
+        const findPuppy = await db
+            .collection(userId)
+            .findOne({ type: 'puppy', _id: puppyId });
+
+        if (!findPuppy) {
+            sendResponse(res, 400, puppyInfo, 'Puppy not found');
+        }
+
+        return sendResponse(res, 200, findPuppy);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with get single puppy request'
+        );
+    }
+};
+
+module.exports = { addUser, addPuppy, getAllPuppy, getPuppy };

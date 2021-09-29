@@ -7,6 +7,7 @@ import GlobalStyles from './GlobalStyles';
 import MainNav from './MainNav';
 import MenuNav from './MenuNav/index';
 import Home from './Home/index';
+import Profile from './Profile/index';
 import PuppyList from './PuppyList/index';
 
 const App = () => {
@@ -18,13 +19,14 @@ const App = () => {
             <MainNav />
             <Main>
                 <MenuNav />
-                <MainContents>
-                    <Switch>
-                        <Route exact path="/">
-                            <Home />
-                        </Route>
-                    </Switch>
-                </MainContents>
+                <Switch>
+                    <Route exact path="/">
+                        <Home />
+                    </Route>
+                    <Route path="/profile">
+                        <Profile />
+                    </Route>
+                </Switch>
             </Main>
             {isPuppyListOpen && <PuppyList />}
         </BrowserRouter>
@@ -34,13 +36,11 @@ const App = () => {
 const Main = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     @media (min-width: 688px) {
         flex-direction: row;
     }
-`;
-const MainContents = styled.div`
-    flex: 10;
 `;
 
 export default App;

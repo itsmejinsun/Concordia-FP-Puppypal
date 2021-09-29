@@ -41,7 +41,9 @@ const MenuNav = () => {
 
 const Wrapper = styled.div`
     @media (min-width: 688px) {
-        flex: 0 290px;
+        flex: 1;
+        min-width: 280px;
+        /* flex: 0 290px; */
         font-size: 1.15rem;
     }
 `;

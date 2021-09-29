@@ -4,15 +4,15 @@ export const PuppyContext = createContext();
 
 const PuppyProvider = ({ children }) => {
     const [isPuppyListOpen, setIsPuppyListOpen] = useState(false);
-    const [selectedPuppy, setSelectedPuppy] = useState();
+    const [selectedPuppyInfo, setSelectedPuppyInfo] = useState();
 
     return (
         <PuppyContext.Provider
             value={{
                 isPuppyListOpen,
                 setIsPuppyListOpen,
-                selectedPuppy,
-                setSelectedPuppy,
+                selectedPuppyInfo,
+                setSelectedPuppyInfo,
             }}
         >
             {children}

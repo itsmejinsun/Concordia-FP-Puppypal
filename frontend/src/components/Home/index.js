@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import Introduction from './Introduction';
+import { Wrapper } from '../Styles';
 
 const Home = () => {
     return (
@@ -10,13 +10,5 @@ const Home = () => {
         </Wrapper>
     );
 };
-
-const Wrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
-`;
 
 export default Home;

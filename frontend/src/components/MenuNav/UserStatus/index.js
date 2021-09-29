@@ -8,12 +8,13 @@ import SelectedPuppy from './SelectedPuppy';
 
 const UserStatus = ({ isSigninOpen }) => {
     const { user, isAuthenticated } = useAuth0();
-    const { setIsPuppyListOpen, selectedPuppy } = useContext(PuppyContext);
+    const { setIsPuppyListOpen } = useContext(PuppyContext);
 
-    const localItem = localStorage.getItem('id');
+    const localUser = localStorage.getItem('id');
+    const localPuppy = localStorage.getItem('pup');
 
     useEffect(() => {
-        if (user && user.sub !== localItem) {
+        if (user && user.sub !== localUser) {
             fetch('/api/user', {
                 method: 'POST',
                 headers: {
@@ -22,7 +23,10 @@ const UserStatus = ({ isSigninOpen }) => {
                 body: JSON.stringify(user),
             })
                 .then((res) => res.json())
-                .then(() => setIsPuppyListOpen(true));
+                .then(() => {
+                    localStorage.setItem('id', user.sub);
+                    setIsPuppyListOpen(true);
+                });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
@@ -31,8 +35,11 @@ const UserStatus = ({ isSigninOpen }) => {
         <>
             {!isAuthenticated ? (
                 <Signin isSigninOpen={isSigninOpen} />
-            ) : selectedPuppy ? (
-                <SelectedPuppy />
+            ) : localPuppy ? (
+                <SelectedPuppy
+                    isSigninOpen={isSigninOpen}
+                    localPuppy={localPuppy}
+                />
             ) : (
                 <Signedin isSigninOpen={isSigninOpen} />
             )}

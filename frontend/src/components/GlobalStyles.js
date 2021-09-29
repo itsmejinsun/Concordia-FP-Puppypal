@@ -73,6 +73,7 @@ export default createGlobalStyle`
     background-color: #fff;
     max-width: 1600px;
     min-width: 480px;
+    width: 100%;
     position: relative;
 }
 `;

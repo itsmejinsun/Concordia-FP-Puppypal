@@ -35,7 +35,7 @@ const AddPuppy = ({ setIsAddPuppyOpen }) => {
     const handleSubmit = (ev) => {
         ev.preventDefault();
 
-        fetch(`/api/user/${user.sub}`, {
+        fetch(`/api/${user.sub}/puppy`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

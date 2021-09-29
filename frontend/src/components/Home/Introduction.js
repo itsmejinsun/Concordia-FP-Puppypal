@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { SubWrapper } from '../Styles';
 import Girl from '../../assets/hugging-dog-girl.png';
 import Boy from '../../assets/hugging-dog-boy.png';
 
@@ -41,18 +42,8 @@ const Introduction = () => {
     );
 };
 
-const Wrapper = styled.div`
-    background-color: var(--main-background-color);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+const Wrapper = styled(SubWrapper)`
     padding: 2rem 4rem;
-    margin-top: 2rem;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-
-    @media (min-width: 688px) {
-        margin-top: 0;
-    }
 
     @media (min-width: 992px) {
         padding: 2rem 6rem;
