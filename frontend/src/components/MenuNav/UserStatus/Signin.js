@@ -69,7 +69,9 @@ const SigninBtn = styled.div`
         font-weight: 600;
         cursor: pointer;
 
-        &:hover {
+        &:hover,
+        &:focus {
+            outline: none;
             animation: shake 1s;
             transform-origin: center;
         }

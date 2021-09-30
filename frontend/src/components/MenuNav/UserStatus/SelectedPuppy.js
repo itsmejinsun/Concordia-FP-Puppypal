@@ -1,21 +1,21 @@
 import React, { useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth0 } from '@auth0/auth0-react';
 
 import { PuppyContext } from '../../PuppyContext';
 
-const SelectedPuppy = ({ localPuppy, isSigninOpen }) => {
-    const { user } = useAuth0();
-    const { selectedPuppyInfo, setSelectedPuppyInfo, setIsPuppyListOpen } =
-        useContext(PuppyContext);
+const SelectedPuppy = ({ isSigninOpen }) => {
+    const {
+        selectedPuppyInfo,
+        setIsPuppyListOpen,
+        isPuppyChanged,
+        fetchPuppyInfo,
+    } = useContext(PuppyContext);
 
     useEffect(() => {
-        fetch(`/api/${user.sub}/puppy/${localPuppy}`)
-            .then((res) => res.json())
-            .then((data) => setSelectedPuppyInfo(data.data));
+        fetchPuppyInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isPuppyChanged]);
 
     const handleClick = (ev) => {
         ev.preventDefault();
@@ -76,7 +76,9 @@ const InfoWrapper = styled.div`
     button {
         cursor: pointer;
 
-        &:hover {
+        &:hover,
+        &:focus {
+            outline: none;
             animation: shake 1s;
             transform-origin: center;
         }

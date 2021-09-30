@@ -9,9 +9,10 @@ import MenuNav from './MenuNav/index';
 import Home from './Home/index';
 import Profile from './Profile/index';
 import PuppyList from './PuppyList/index';
+import ProfilePicture from './Profile/ProfilePicture/index';
 
 const App = () => {
-    const { isPuppyListOpen } = useContext(PuppyContext);
+    const { isPuppyListOpen, isProfilePicOpen } = useContext(PuppyContext);
 
     return (
         <BrowserRouter>
@@ -28,7 +29,10 @@ const App = () => {
                     </Route>
                 </Switch>
             </Main>
+
+            {/* Modals */}
             {isPuppyListOpen && <PuppyList />}
+            {isProfilePicOpen && <ProfilePicture />}
         </BrowserRouter>
     );
 };

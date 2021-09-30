@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useAuth0 } from '@auth0/auth0-react';
 
+import { ModalSubWrapper } from '../Styles';
 import { PuppyContext } from '../PuppyContext';
 
 const SelectPuppy = ({ isAddPuppyOpen, setIsAddPuppyOpen }) => {
     const { user, logout } = useAuth0();
     const [puppyList, setPuppyList] = useState();
-    const { setIsPuppyListOpen } = useContext(PuppyContext);
+    const { setIsPuppyListOpen, isPuppyChanged, setIsPuppyChanged } =
+        useContext(PuppyContext);
 
     // Fetch all puppy list
     useEffect(() => {
@@ -21,6 +23,7 @@ const SelectPuppy = ({ isAddPuppyOpen, setIsAddPuppyOpen }) => {
     const handleClick = (puppy) => {
         localStorage.setItem('pup', puppy._id);
         setIsPuppyListOpen(false);
+        setIsPuppyChanged(!isPuppyChanged);
     };
 
     // User log out
@@ -31,7 +34,7 @@ const SelectPuppy = ({ isAddPuppyOpen, setIsAddPuppyOpen }) => {
     };
 
     return (
-        <Wrapper>
+        <ModalSubWrapper>
             <button className="close" onClick={() => setIsPuppyListOpen(false)}>
                 ⨉
             </button>
@@ -58,39 +61,9 @@ const SelectPuppy = ({ isAddPuppyOpen, setIsAddPuppyOpen }) => {
                 <p>Do you want to sign out?</p>
                 <button onClick={() => handleLogOut()}>Sign out</button>
             </SingoutWrapper>
-        </Wrapper>
+        </ModalSubWrapper>
     );
 };
-
-const Wrapper = styled.div`
-    background-color: #fff;
-    width: 480px;
-    height: 480px;
-    margin-top: 2rem;
-    border-bottom: solid 2px var(--main-background-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    position: relative;
-
-    .close {
-        color: grey;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        font-weight: bold;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        cursor: pointer;
-    }
-
-    @media (min-width: 992px) {
-        margin-top: 0;
-        border-right: solid 2px var(--main-background-color);
-    }
-`;
 
 const SelectWrapper = styled.div`
     text-align: center;

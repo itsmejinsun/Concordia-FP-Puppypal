@@ -31,15 +31,15 @@ export const DividedSection = styled.div`
     min-width: 45%;
     min-height: 500px;
     margin: 1rem;
-    padding: 4rem;
+    padding: 4rem 2rem;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 
     p {
-        margin: 1.25rem 0.5rem;
-        font-size: 1.2rem;
+        margin: 0.75rem;
+        font-size: 1.1rem;
     }
 
     div:last-of-type {
@@ -58,15 +58,93 @@ export const DividedSection = styled.div`
         font-family: inherit;
         font-size: 1.2rem;
         cursor: pointer;
+
+        &:hover,
+        &:focus {
+            outline: none;
+            animation: shake 1s;
+            transform-origin: center;
+        }
     }
 
     @media (min-width: 992px) {
-        padding: 2rem 4rem;
+        padding: 2rem;
     }
 
     @media (min-width: 1312px) {
+        padding: 2rem 4rem;
+
         button {
             min-width: 125px;
         }
+    }
+
+    @keyframes shake {
+        10%,
+        90% {
+            transform: rotate(-2deg);
+        }
+        20%,
+        80% {
+            transform: rotate(2deg);
+        }
+
+        30%,
+        50%,
+        70% {
+            transform: rotate(-2deg);
+        }
+        40%,
+        60% {
+            transform: rotate(2deg);
+        }
+    }
+`;
+
+export const ModalWrapper = styled.div`
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: contrast(1) blur(10px);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+
+    @media (min-width: 992px) {
+        flex-direction: row;
+        justify-content: center;
+    }
+`;
+
+export const ModalSubWrapper = styled.div`
+    background-color: #fff;
+    width: 480px;
+    height: 480px;
+    margin-top: 2rem;
+    border-bottom: solid 2px var(--main-background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+
+    .close {
+        color: grey;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+    }
+
+    @media (min-width: 992px) {
+        margin-top: 0;
+        border-right: solid 2px var(--main-background-color);
     }
 `;
