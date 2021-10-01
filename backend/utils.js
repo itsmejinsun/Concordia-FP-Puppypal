@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 // Function that will connect MongoDB
-const connectDb = async () => {
+const connectMongo = async () => {
     const { MONGO_URI } = process.env;
     const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
@@ -12,6 +12,19 @@ const connectDb = async () => {
     const db = client.db();
     return db;
 };
+
+// Variables that will connect Cloudinary
+const cloudinary = require('cloudinary').v2;
+
+const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+    process.env;
+
+cloudinary.config({
+    cloud_name: CLOUDINARY_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+    secure: true,
+});
 
 // Function that will send response
 const sendResponse = (res, status, data, message) => {
@@ -29,4 +42,4 @@ const validatePuppyAdd = (res, puppyInfo) => {
     return;
 };
 
-module.exports = { connectDb, sendResponse, validatePuppyAdd };
+module.exports = { connectMongo, cloudinary, sendResponse, validatePuppyAdd };

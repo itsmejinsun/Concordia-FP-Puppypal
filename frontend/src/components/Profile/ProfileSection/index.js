@@ -1,23 +1,25 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 
-import { DividedSection } from '../Styles';
-import { PuppyContext } from '../PuppyContext';
+import { DividedSection } from '../../Styles';
+import { PuppyContext } from '../../PuppyContext';
+import DeleteModal from './DeleteModal';
 
 const ProfileSection = () => {
     const {
         isPuppyChanged,
         selectedPuppyInfo,
         setIsProfilePicOpen,
+        isDeleteClick,
+        setIsDeleteClick,
         dogBreed,
         handleGetGogBreed,
         handleGetPuppy,
         handleUpdatePuppy,
-        handleDeletePuppy,
     } = useContext(PuppyContext);
 
     const [isEditOn, setIsEditOn] = useState(false);
-    const [isChanged, setIsChanged] = useState(false);
+
     const [inputData, setInputData] = useState();
 
     const formEl = useRef();
@@ -46,10 +48,10 @@ const ProfileSection = () => {
             handleUpdatePuppy(inputData);
             handleGetPuppy();
             setIsEditOn(false);
-            setIsChanged(!isChanged);
             return;
         }
-        handleDeletePuppy();
+
+        setIsDeleteClick(true);
     };
 
     useEffect(() => {
@@ -108,15 +110,24 @@ const ProfileSection = () => {
                         <select
                             ref={genderEl}
                             id="gender"
-                            defaultValue={selectedPuppyInfo.gender}
                             onChange={(ev) =>
                                 handleInputChange('gender', ev.target.value)
                             }
                             required
                             disabled={isEditOn ? false : true}
                         >
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option
+                                value="male"
+                                selected={selectedPuppyInfo.gender === 'male'}
+                            >
+                                Male
+                            </option>
+                            <option
+                                value="female"
+                                selected={selectedPuppyInfo.gender === 'female'}
+                            >
+                                Female
+                            </option>
                         </select>
                     </InputWrapper>
                     <InputWrapper>
@@ -124,18 +135,35 @@ const ProfileSection = () => {
                         <select
                             ref={breedEl}
                             id="breed"
-                            defaultValue={selectedPuppyInfo.breed}
                             onChange={(ev) =>
                                 handleInputChange('breed', ev.target.value)
                             }
                             required
                             disabled={isEditOn ? false : true}
                         >
-                            <option value="mixed breed">mixed-breed</option>
-                            <option value="other">other</option>
+                            <option
+                                value="mixed breed"
+                                selected={
+                                    selectedPuppyInfo.breed === 'mixed breed'
+                                }
+                            >
+                                mixed-breed
+                            </option>
+                            <option
+                                value="other"
+                                selected={selectedPuppyInfo.breed === 'other'}
+                            >
+                                other
+                            </option>
                             {dogBreed &&
                                 dogBreed.map((breed) => (
-                                    <option key={breed} value={breed}>
+                                    <option
+                                        key={breed}
+                                        value={breed}
+                                        selected={
+                                            selectedPuppyInfo.breed === breed
+                                        }
+                                    >
                                         {breed}
                                     </option>
                                 ))}
@@ -147,7 +175,7 @@ const ProfileSection = () => {
                             Change
                         </button>
                     </InputWrapper>
-                    <div>
+                    <div className="btnWrapper">
                         <button
                             className={isEditOn ? '' : 'fill'}
                             onClick={(ev) => handleEditClick(ev)}
@@ -163,11 +191,14 @@ const ProfileSection = () => {
                     </div>
                 </form>
             ) : null}
+            {isDeleteClick ? <DeleteModal /> : null}
         </Wrapper>
     );
 };
 
 const Wrapper = styled(DividedSection)`
+    position: relative;
+
     .fill {
         color: #fff;
         background-color: var(--button-color-primary);
@@ -191,7 +222,7 @@ const Wrapper = styled(DividedSection)`
         }
     }
 
-    div:last-of-type {
+    .btnWrapper {
         margin-top: 2.75rem;
     }
 

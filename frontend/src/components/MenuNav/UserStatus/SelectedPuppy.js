@@ -1,6 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDog } from '@fortawesome/free-solid-svg-icons';
 
 import { PuppyContext } from '../../PuppyContext';
 
@@ -25,15 +27,32 @@ const SelectedPuppy = ({ isSigninOpen }) => {
         <Wrapper className={`${isSigninOpen}`}>
             {selectedPuppyInfo && (
                 <StyledLink activeClassName="active" to="/profile">
-                    <InfoWrapper>
-                        <p>
-                            {selectedPuppyInfo.name.slice(0, 1).toUpperCase()}
-                            {selectedPuppyInfo.name.slice(1)}
-                        </p>
-                        <button onClick={(ev) => handleClick(ev)}>
-                            Sign out
-                        </button>
-                    </InfoWrapper>
+                    <Background>
+                        <InfoWrapper>
+                            {selectedPuppyInfo.profilePic ? (
+                                <img
+                                    src={selectedPuppyInfo.profilePic}
+                                    alt={selectedPuppyInfo._id}
+                                />
+                            ) : (
+                                <Icon>
+                                    <div className="dogicon">
+                                        <FontAwesomeIcon icon={faDog} />
+                                    </div>
+                                </Icon>
+                            )}
+
+                            <p>
+                                {selectedPuppyInfo.name
+                                    .slice(0, 1)
+                                    .toUpperCase()}
+                                {selectedPuppyInfo.name.slice(1)}
+                            </p>
+                            <button onClick={(ev) => handleClick(ev)}>
+                                Sign out
+                            </button>
+                        </InfoWrapper>
+                    </Background>
                 </StyledLink>
             )}
         </Wrapper>
@@ -57,23 +76,66 @@ const Wrapper = styled.div`
     }
 `;
 
-const InfoWrapper = styled.div`
+const StyledLink = styled(NavLink)`
+    padding: 1.1rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    transition: all 0.4s ease-in;
+
+    &.active {
+        padding: 1.1rem 3rem;
+        background-color: var(--nav-selected-color);
+
+        &:hover {
+            transform: none;
+            box-shadow: none;
+        }
+    }
+
+    &:hover {
+        background-color: var(--nav-selected-color);
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transform: scale(1.075);
+        padding: 1.1rem 3rem;
+    }
+`;
+
+const Background = styled.div`
     background-color: var(--button-color-secondary);
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 130px;
     padding: 1rem;
     margin: 1rem;
     border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    position: relative;
+`;
+
+const InfoWrapper = styled.div`
+    position: absolute;
+    top: -20px;
+    left: 20px;
+
+    img {
+        width: 80px;
+        border-radius: 50%;
+        border: solid 3px #fff;
+        margin-bottom: 0.25rem;
+    }
 
     p {
         color: #fff;
+        font-size: 1rem;
     }
 
     button {
+        background: none;
+        border: solid 1px var(--main-font-color);
+        border-radius: 5px;
+        padding: 0.1rem 0.5rem;
+        margin-top: 0.75rem;
+        font-family: inherit;
         cursor: pointer;
 
         &:hover,
@@ -106,28 +168,20 @@ const InfoWrapper = styled.div`
     }
 `;
 
-const StyledLink = styled(NavLink)`
-    padding: 1.1rem;
-    border-radius: 5px;
+const Icon = styled.div`
+    background-color: darkgrey;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: solid 5px lightgrey;
     display: flex;
+    justify-content: center;
     align-items: center;
-    transition: all 0.4s ease-in;
+    margin-bottom: 0.5rem;
 
-    &.active {
-        padding: 1.1rem 3rem;
-        background-color: var(--nav-selected-color);
-
-        &:hover {
-            transform: none;
-            box-shadow: none;
-        }
-    }
-
-    &:hover {
-        background-color: var(--nav-selected-color);
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        transform: scale(1.075);
-        padding: 1.1rem 3rem;
+    .dogicon {
+        color: lightgrey;
+        font-size: 3rem;
     }
 `;
 

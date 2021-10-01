@@ -42,7 +42,7 @@ export const DividedSection = styled.div`
         font-size: 1.1rem;
     }
 
-    div:last-of-type {
+    .btnWrapper {
         display: flex;
         justify-content: space-evenly;
     }
@@ -108,6 +108,7 @@ export const ModalWrapper = styled.div`
     height: 100%;
     position: absolute;
     top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,5 +147,68 @@ export const ModalSubWrapper = styled.div`
     @media (min-width: 992px) {
         margin-top: 0;
         border-right: solid 2px var(--main-background-color);
+    }
+`;
+
+export const DividedModalWrapper = styled.div`
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: contrast(1) blur(10px);
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+`;
+
+export const DividedModalSubWrapper = styled.div`
+    background-color: #fff;
+    min-width: 280px;
+    min-height: 200px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .close {
+        color: grey;
+        background: none;
+        padding: 0;
+        margin: 0;
+        border: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: right;
+        position: absolute;
+        top: 0;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        animation: none;
+    }
+
+    div {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    button {
+        color: #fff;
+        background-color: var(--button-color-primary);
+        font-size: 1rem;
+        margin-top: 1rem;
     }
 `;

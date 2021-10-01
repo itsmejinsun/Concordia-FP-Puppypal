@@ -7,6 +7,7 @@ const {
     getPuppy,
     putPuppy,
     deletePuppy,
+    addProfilePic,
 } = require('./handlers');
 
 router.post('/api/user', addUser);
@@ -16,6 +17,8 @@ router.get('/api/:userId/puppy', getAllPuppy);
 router.get('/api/:userId/puppy/:puppyId', getPuppy);
 router.put('/api/:userId/puppy/:puppyId', putPuppy);
 router.delete('/api/:userId/puppy/:puppyId', deletePuppy);
+
+router.post('/api/:userId/puppy/:puppyId/profilePic', addProfilePic);
 
 router.get('*', (req, res) => {
     res.status(404).json({

@@ -6,6 +6,7 @@ const PuppyProvider = ({ children }) => {
     const [isPuppyListOpen, setIsPuppyListOpen] = useState(false);
     const [isPuppyChanged, setIsPuppyChanged] = useState(false);
     const [isProfilePicOpen, setIsProfilePicOpen] = useState(false);
+    const [isDeleteClick, setIsDeleteClick] = useState(false);
 
     const [dogBreed, setDogBreed] = useState([]);
 
@@ -78,6 +79,7 @@ const PuppyProvider = ({ children }) => {
                 localStorage.setItem('pup', '');
                 setIsPuppyChanged(!isPuppyChanged);
                 setSelectedPuppyInfo('');
+                setIsDeleteClick(false);
                 setIsPuppyListOpen(true);
             });
 
@@ -93,6 +95,8 @@ const PuppyProvider = ({ children }) => {
                 setIsPuppyChanged,
                 selectedPuppyInfo,
                 setSelectedPuppyInfo,
+                isDeleteClick,
+                setIsDeleteClick,
                 dogBreed,
                 setDogBreed,
                 isProfilePicOpen,

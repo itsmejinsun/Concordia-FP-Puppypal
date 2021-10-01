@@ -8,7 +8,15 @@ import { PuppyContext } from '../../PuppyContext';
 const ProfilePictureDetail = () => {
     const [uploadProfilePic, setUploadProfilePic] = useState();
 
-    const { setIsProfilePicOpen } = useContext(PuppyContext);
+    const {
+        selectedPuppyInfo,
+        setIsProfilePicOpen,
+        isPuppyChanged,
+        setIsPuppyChanged,
+    } = useContext(PuppyContext);
+
+    console.log('1', uploadProfilePic);
+    console.log('2', selectedPuppyInfo);
 
     const handleImgChange = (ev) => {
         const selected = ev.target.files[0];
@@ -22,25 +30,55 @@ const ProfilePictureDetail = () => {
         }
     };
 
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+
+        if (uploadProfilePic) {
+            fetch(
+                `/api/${localStorage.getItem(
+                    'id'
+                )}/puppy/${localStorage.getItem('pup')}/profilePic`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: uploadProfilePic }),
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    setIsProfilePicOpen(false);
+                    setIsPuppyChanged(!isPuppyChanged);
+                });
+        }
+    };
+
     return (
         <Wrapper>
             <h1>Profile picture</h1>
             <PictureWrapper>
-                {!uploadProfilePic ? (
-                    <Picture>
-                        <div className="dogicon">
-                            <FontAwesomeIcon icon={faDog} />
-                        </div>
-                    </Picture>
-                ) : (
+                {uploadProfilePic ? (
                     <Picture
                         style={{
                             background: `url("${uploadProfilePic}") no-repeat center/cover`,
                         }}
                     />
+                ) : selectedPuppyInfo ? (
+                    <Picture
+                        style={{
+                            background: `url("${selectedPuppyInfo.profilePic}") no-repeat center/cover`,
+                        }}
+                    />
+                ) : (
+                    <Picture>
+                        <div className="dogicon">
+                            <FontAwesomeIcon icon={faDog} />
+                        </div>
+                    </Picture>
                 )}
             </PictureWrapper>
-            <form>
+            <PictureForm onSubmit={(ev) => handleSubmit(ev)}>
                 <label htmlFor="fileInput">
                     <FontAwesomeIcon icon={faCamera} />
                 </label>
@@ -54,9 +92,9 @@ const ProfilePictureDetail = () => {
                     <button onClick={() => setIsProfilePicOpen(false)}>
                         Cancel
                     </button>
-                    <button>Save</button>
+                    <button type="submit">Save</button>
                 </div>
-            </form>
+            </PictureForm>
         </Wrapper>
     );
 };
@@ -120,19 +158,6 @@ const PictureWrapper = styled.div`
     justify-content: center;
     align-items: center;
     position: relative;
-
-    label {
-        color: grey;
-        font-size: 2rem;
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-        cursor: pointer;
-    }
-
-    input {
-        display: none;
-    }
 `;
 
 const Picture = styled.div`
@@ -147,6 +172,23 @@ const Picture = styled.div`
     .dogicon {
         color: #fff;
         font-size: 4rem;
+    }
+`;
+
+const PictureForm = styled.form`
+    position: relative;
+
+    label {
+        color: grey;
+        font-size: 2rem;
+        position: absolute;
+        right: 62px;
+        top: -90px;
+        cursor: pointer;
+    }
+
+    input {
+        display: none;
     }
 `;
 

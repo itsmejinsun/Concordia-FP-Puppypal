@@ -4,7 +4,12 @@ const assert = require('assert');
 const moment = require('moment');
 const { v4: uuidv4 } = require('uuid');
 
-const { connectDb, sendResponse, validatePuppyAdd } = require('./utils');
+const {
+    connectMongo,
+    cloudinary,
+    sendResponse,
+    validatePuppyAdd,
+} = require('./utils');
 
 // FIND user data
 // if there is no user, create user then find
@@ -20,7 +25,7 @@ const addUser = async (req, res) => {
     } = req.body;
 
     try {
-        const db = await connectDb();
+        const db = await connectMongo();
 
         const findUser = await db.collection(sub).findOne({ _id: sub });
 
@@ -52,7 +57,7 @@ const addPuppy = async (req, res) => {
     const puppyInfo = req.body;
 
     try {
-        const db = await connectDb();
+        const db = await connectMongo();
 
         const validate = validatePuppyAdd(res, puppyInfo);
 
@@ -86,7 +91,7 @@ const getAllPuppy = async (req, res) => {
     const { userId } = req.params;
 
     try {
-        const db = await connectDb();
+        const db = await connectMongo();
 
         const findAllPuppy = await db
             .collection(userId)
@@ -113,7 +118,7 @@ const getPuppy = async (req, res) => {
     const { userId, puppyId } = req.params;
 
     try {
-        const db = await connectDb();
+        const db = await connectMongo();
 
         const findPuppy = await db
             .collection(userId)
@@ -139,7 +144,7 @@ const putPuppy = async (req, res) => {
     const { name, birthday, gender, breed } = req.body;
 
     try {
-        const db = await connectDb();
+        const db = await connectMongo();
 
         const result = await db.collection(userId).updateOne(
             { type: 'puppy', _id: puppyId, active: true },
@@ -164,7 +169,7 @@ const deletePuppy = async (req, res) => {
     const { userId, puppyId } = req.params;
 
     try {
-        const db = await connectDb();
+        const db = await connectMongo();
 
         const result = await db
             .collection(userId)
@@ -179,6 +184,58 @@ const deletePuppy = async (req, res) => {
     }
 };
 
+const addProfilePic = async (req, res) => {
+    const { userId, puppyId } = req.params;
+    const profilePic = req.body.data;
+
+    try {
+        console.log('here1');
+        // Upload file to Cloudinary
+        const uploadedRes = await cloudinary.uploader.upload(
+            profilePic,
+            {
+                upload_preset: 'puppypal',
+                transformation: {
+                    width: 200,
+                    height: 200,
+                    crop: 'fill',
+                },
+                tags: ['profile', puppyId],
+            },
+            function (error, result) {
+                console.log(result);
+            }
+        );
+
+        console.log('here2');
+
+        // Update profile picture url in MongoDB
+        if (!uploadedRes) return;
+
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).updateOne(
+            { type: 'puppy', _id: puppyId, active: true },
+            {
+                $set: {
+                    profilePic: uploadedRes.secure_url,
+                    update_at: moment().format(),
+                },
+            }
+        );
+
+        console.log('here3');
+        return sendResponse(res, 200, uploadedRes.secure_url);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            "Error occured with update puppy's profile picture request"
+        );
+    }
+};
+
 module.exports = {
     addUser,
     addPuppy,
@@ -186,4 +243,5 @@ module.exports = {
     getPuppy,
     putPuppy,
     deletePuppy,
+    addProfilePic,
 };

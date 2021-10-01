@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DividedSection } from '../Styles';
+import { DividedSection } from '../../Styles';
 
 const MoreSection = () => {
     return (
