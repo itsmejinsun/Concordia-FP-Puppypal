@@ -7,9 +7,33 @@ const PuppyProvider = ({ children }) => {
     const [isPuppyChanged, setIsPuppyChanged] = useState(false);
     const [isProfilePicOpen, setIsProfilePicOpen] = useState(false);
 
+    const [dogBreed, setDogBreed] = useState([]);
+
     const [selectedPuppyInfo, setSelectedPuppyInfo] = useState();
 
-    const fetchPuppyInfo = () => {
+    const handleGetGogBreed = () => {
+        fetch('https://dog.ceo/api/breeds/list/all')
+            .then((res) => res.json())
+            .then((data) => Object.entries(data.message))
+            .then((data) =>
+                data
+                    .map((item) =>
+                        item[1].length > 0
+                            ? item[1].map((arr) => `${item[0]} ${arr}`)
+                            : item[0]
+                    )
+                    .flat()
+            )
+            .then((data) => setDogBreed(data));
+
+        return;
+    };
+
+    const handleGetPuppy = () => {
+        if (!localStorage.getItem('pup')) {
+            setSelectedPuppyInfo('');
+            return;
+        }
         fetch(
             `/api/${localStorage.getItem('id')}/puppy/${localStorage.getItem(
                 'pup'
@@ -17,6 +41,45 @@ const PuppyProvider = ({ children }) => {
         )
             .then((res) => res.json())
             .then((data) => setSelectedPuppyInfo(data.data));
+
+        return;
+    };
+
+    const handleUpdatePuppy = (inputData) => {
+        fetch(
+            `/api/${localStorage.getItem('id')}/puppy/${localStorage.getItem(
+                'pup'
+            )}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(inputData),
+            }
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            });
+
+        return;
+    };
+
+    const handleDeletePuppy = () => {
+        fetch(
+            `/api/${localStorage.getItem('id')}/puppy/${localStorage.getItem(
+                'pup'
+            )}`,
+            { method: 'DELETE' }
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                localStorage.setItem('pup', '');
+                setIsPuppyChanged(!isPuppyChanged);
+                setSelectedPuppyInfo('');
+                setIsPuppyListOpen(true);
+            });
 
         return;
     };
@@ -29,10 +92,15 @@ const PuppyProvider = ({ children }) => {
                 isPuppyChanged,
                 setIsPuppyChanged,
                 selectedPuppyInfo,
+                setSelectedPuppyInfo,
+                dogBreed,
+                setDogBreed,
                 isProfilePicOpen,
                 setIsProfilePicOpen,
-                setSelectedPuppyInfo,
-                fetchPuppyInfo,
+                handleGetGogBreed,
+                handleGetPuppy,
+                handleUpdatePuppy,
+                handleDeletePuppy,
             }}
         >
             {children}

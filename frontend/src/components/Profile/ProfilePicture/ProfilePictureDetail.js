@@ -7,7 +7,7 @@ import { PuppyContext } from '../../PuppyContext';
 
 const ProfilePictureDetail = () => {
     const [uploadProfilePic, setUploadProfilePic] = useState();
-    console.log(uploadProfilePic);
+
     const { setIsProfilePicOpen } = useContext(PuppyContext);
 
     const handleImgChange = (ev) => {
@@ -39,6 +39,8 @@ const ProfilePictureDetail = () => {
                         }}
                     />
                 )}
+            </PictureWrapper>
+            <form>
                 <label htmlFor="fileInput">
                     <FontAwesomeIcon icon={faCamera} />
                 </label>
@@ -48,13 +50,13 @@ const ProfilePictureDetail = () => {
                     id="fileInput"
                     onChange={(ev) => handleImgChange(ev)}
                 />
-            </PictureWrapper>
-            <div>
-                <button onClick={() => setIsProfilePicOpen(false)}>
-                    Cancel
-                </button>
-                <button>Save</button>
-            </div>
+                <div>
+                    <button onClick={() => setIsProfilePicOpen(false)}>
+                        Cancel
+                    </button>
+                    <button>Save</button>
+                </div>
+            </form>
         </Wrapper>
     );
 };

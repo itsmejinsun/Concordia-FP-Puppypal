@@ -65,6 +65,7 @@ const addPuppy = async (req, res) => {
             ...puppyInfo,
             _id: uuidv4(),
             name: puppyInfo.name.toLowerCase(),
+            active: true,
             update_at: moment().format(),
         });
         assert.equal(true, insertPuppy.acknowledged);
@@ -89,7 +90,7 @@ const getAllPuppy = async (req, res) => {
 
         const findAllPuppy = await db
             .collection(userId)
-            .find({ type: 'puppy' })
+            .find({ type: 'puppy', active: true })
             .toArray();
 
         if (!findAllPuppy) {
@@ -116,7 +117,7 @@ const getPuppy = async (req, res) => {
 
         const findPuppy = await db
             .collection(userId)
-            .findOne({ type: 'puppy', _id: puppyId });
+            .findOne({ type: 'puppy', _id: puppyId, active: true });
 
         if (!findPuppy) {
             sendResponse(res, 400, puppyInfo, 'Puppy not found');
@@ -133,4 +134,56 @@ const getPuppy = async (req, res) => {
     }
 };
 
-module.exports = { addUser, addPuppy, getAllPuppy, getPuppy };
+const putPuppy = async (req, res) => {
+    const { userId, puppyId } = req.params;
+    const { name, birthday, gender, breed } = req.body;
+
+    try {
+        const db = await connectDb();
+
+        const result = await db.collection(userId).updateOne(
+            { type: 'puppy', _id: puppyId, active: true },
+            {
+                $set: {
+                    name,
+                    birthday,
+                    gender,
+                    breed,
+                    update_at: moment().format(),
+                },
+            }
+        );
+
+        return sendResponse(res, 200, puppyId, 'Puppy is updated');
+    } catch (err) {
+        sendResponse(res, 500, null, 'Error occured with update puppy request');
+    }
+};
+
+const deletePuppy = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    try {
+        const db = await connectDb();
+
+        const result = await db
+            .collection(userId)
+            .updateOne(
+                { type: 'puppy', _id: puppyId, active: true },
+                { $set: { active: false, update_at: moment().format() } }
+            );
+
+        return sendResponse(res, 200, puppyId, 'Puppy is deleted');
+    } catch (err) {
+        sendResponse(res, 500, null, 'Error occured with delete puppy request');
+    }
+};
+
+module.exports = {
+    addUser,
+    addPuppy,
+    getAllPuppy,
+    getPuppy,
+    putPuppy,
+    deletePuppy,
+};

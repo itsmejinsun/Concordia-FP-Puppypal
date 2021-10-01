@@ -9,11 +9,11 @@ const SelectedPuppy = ({ isSigninOpen }) => {
         selectedPuppyInfo,
         setIsPuppyListOpen,
         isPuppyChanged,
-        fetchPuppyInfo,
+        handleGetPuppy,
     } = useContext(PuppyContext);
 
     useEffect(() => {
-        fetchPuppyInfo();
+        handleGetPuppy();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPuppyChanged]);
 

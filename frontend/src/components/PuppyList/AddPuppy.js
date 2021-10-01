@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useAuth0 } from '@auth0/auth0-react';
+
+import { PuppyContext } from '../PuppyContext';
 
 const initialPuppyInfo = {
     _id: null,
@@ -13,23 +15,13 @@ const initialPuppyInfo = {
 
 const AddPuppy = ({ setIsAddPuppyOpen }) => {
     const { user } = useAuth0();
-    const [dogBreed, setDogBreed] = useState([]);
     const [puppyInfo, setPuppyInfo] = useState(initialPuppyInfo);
 
+    const { dogBreed, handleGetGogBreed } = useContext(PuppyContext);
+
     useEffect(() => {
-        fetch('https://dog.ceo/api/breeds/list/all')
-            .then((res) => res.json())
-            .then((data) => Object.entries(data.message))
-            .then((data) =>
-                data
-                    .map((item) =>
-                        item[1].length > 0
-                            ? item[1].map((arr) => `${item[0]} ${arr}`)
-                            : item[0]
-                    )
-                    .flat()
-            )
-            .then((data) => setDogBreed(data));
+        handleGetGogBreed();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = (ev) => {

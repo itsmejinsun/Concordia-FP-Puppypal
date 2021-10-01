@@ -72,7 +72,7 @@ export const DividedSection = styled.div`
     }
 
     @media (min-width: 1312px) {
-        padding: 2rem 4rem;
+        padding: 2rem 6rem;
 
         button {
             min-width: 125px;
