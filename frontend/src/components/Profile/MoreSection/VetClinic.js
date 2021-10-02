@@ -141,7 +141,6 @@ const VetClinic = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                                     : null
                             }
                             onChange={(ev) => handleChange(ev, 'web')}
-                            required
                             disabled={
                                 selectedPuppyInfo.vet && !isEditOn
                                     ? true

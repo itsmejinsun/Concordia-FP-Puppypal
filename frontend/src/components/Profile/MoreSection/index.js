@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import { DividedSection } from '../../Styles';
+import { PuppyContext } from '../../PuppyContext';
 import Microchip from './Microchip';
 import License from './License';
 import Spay from './Spay';
@@ -18,6 +19,7 @@ const initialState = {
 
 const MoreSection = () => {
     const [isMoreSectionOpen, setIsMoreSectionOpen] = useState(initialState);
+    const { selectedPuppyInfo } = useContext(PuppyContext);
 
     const handleSelect = (menu) => {
         setIsMoreSectionOpen({ ...isMoreSectionOpen, [menu]: true });
@@ -31,18 +33,43 @@ const MoreSection = () => {
                 <Contents>
                     <p tabIndex="0" onClick={() => handleSelect('microchip')}>
                         Microchip
+                        <span>
+                            {selectedPuppyInfo &&
+                                selectedPuppyInfo.microchip &&
+                                selectedPuppyInfo.microchip.number}
+                        </span>
                     </p>
                     <p tabIndex="0" onClick={() => handleSelect('license')}>
                         Pet license
+                        <span>
+                            {selectedPuppyInfo &&
+                                selectedPuppyInfo.license &&
+                                selectedPuppyInfo.license.number}
+                        </span>
                     </p>
                     <p tabIndex="0" onClick={() => handleSelect('spay')}>
                         Spay(Neuter)
+                        <span>
+                            {selectedPuppyInfo &&
+                                selectedPuppyInfo.spay &&
+                                selectedPuppyInfo.spay.date}
+                        </span>
                     </p>
                     <p tabIndex="0" onClick={() => handleSelect('insurance')}>
                         Insurance
+                        <span>
+                            {selectedPuppyInfo &&
+                                selectedPuppyInfo.insurance &&
+                                selectedPuppyInfo.insurance.number}
+                        </span>
                     </p>
                     <p tabIndex="0" onClick={() => handleSelect('vet')}>
-                        Veterinary clinic
+                        Vet clinic
+                        <span>
+                            {selectedPuppyInfo &&
+                                selectedPuppyInfo.vet &&
+                                selectedPuppyInfo.vet.phone}
+                        </span>
                     </p>
                 </Contents>
                 <div>
@@ -82,11 +109,22 @@ const Wrapper = styled(DividedSection)`
             transform: scale(1.05);
         }
     }
+
+    div {
+        display: flex;
+        justify-content: center;
+    }
 `;
 
 const Contents = styled.div`
     display: flex;
     flex-direction: column;
+
+    p > span {
+        color: grey;
+        font-size: 0.95rem;
+        margin-left: 2rem;
+    }
 `;
 
 export default MoreSection;
