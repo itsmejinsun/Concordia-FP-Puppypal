@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { DividedSection } from '../../Styles';
 import Microchip from './Microchip';
 import License from './License';
+import Spay from './Spay';
+import Insurance from './Insurance';
 
 const initialState = {
     microchip: false,
@@ -32,8 +34,12 @@ const MoreSection = () => {
                     <p tabIndex="0" onClick={() => handleSelect('license')}>
                         Pet license
                     </p>
-                    <p tabIndex="0">Spay(Neuter)</p>
-                    <p tabIndex="0">Insurance</p>
+                    <p tabIndex="0" onClick={() => handleSelect('spay')}>
+                        Spay(Neuter)
+                    </p>
+                    <p tabIndex="0" onClick={() => handleSelect('insurance')}>
+                        Insurance
+                    </p>
                     <p tabIndex="0">Vet</p>
                 </Contents>
                 <div>
@@ -45,6 +51,12 @@ const MoreSection = () => {
             )}
             {isMoreSectionOpen.license && (
                 <License setIsMoreSectionOpen={setIsMoreSectionOpen} />
+            )}
+            {isMoreSectionOpen.spay && (
+                <Spay setIsMoreSectionOpen={setIsMoreSectionOpen} />
+            )}
+            {isMoreSectionOpen.insurance && (
+                <Insurance setIsMoreSectionOpen={setIsMoreSectionOpen} />
             )}
         </>
     );

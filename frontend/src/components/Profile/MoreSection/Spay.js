@@ -12,28 +12,28 @@ import {
 import { PuppyContext } from '../../PuppyContext';
 
 const initialState = {
-    number: null,
-    issueDate: null,
-    expireDate: null,
-    issueBy: null,
+    date: null,
+    clinic: null,
+    contact: null,
     file: null,
     memo: null,
 };
 
-const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
-    const [licenseData, setLicenseData] = useState(initialState);
+const Spay = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
+    const [spayData, setSpayData] = useState(initialState);
     const [isEditOn, setIsEditOn] = useState(false);
 
+    console.log(spayData);
     const { selectedPuppyInfo, handleGetPuppy } = useContext(PuppyContext);
 
     // Function that will close modal
     const handleModalClose = () => {
-        setIsMoreSectionOpen({ ...isMoreSectionOpen, license: false });
+        setIsMoreSectionOpen({ ...isMoreSectionOpen, spay: false });
     };
 
     // Function that will save input data
     const handleChange = (ev, item) => {
-        setLicenseData({ ...licenseData, [item]: ev.target.value });
+        setSpayData({ ...spayData, [item]: ev.target.value });
     };
 
     // Function that will save file input data
@@ -42,7 +42,7 @@ const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
 
         const reader = new FileReader();
         reader.onloadend = () => {
-            setLicenseData({ ...licenseData, file: reader.result });
+            setSpayData({ ...spayData, file: reader.result });
         };
         reader.readAsDataURL(selected);
     };
@@ -51,24 +51,24 @@ const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
         ev.preventDefault();
 
         setIsEditOn(value);
-        setLicenseData(selectedPuppyInfo.license);
+        setSpayData(selectedPuppyInfo.spay);
     };
 
     // Funtion that will send inserted data to database
     const handleSubmit = (ev) => {
         ev.preventDefault();
 
-        if (licenseData.number) {
+        if (spayData.date) {
             fetch(
                 `/api/${localStorage.getItem(
                     'id'
-                )}/puppy/${localStorage.getItem('pup')}/license`,
+                )}/puppy/${localStorage.getItem('pup')}/spay`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ data: licenseData }),
+                    body: JSON.stringify({ data: spayData }),
                 }
             )
                 .then((res) => res.json())
@@ -85,76 +85,58 @@ const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                 <button className="close" onClick={() => handleModalClose()}>
                     ⨉
                 </button>
-                <h2>Pet License</h2>
+                <h2>Spay(Neuter)</h2>
                 <form onSubmit={(ev) => handleSubmit(ev)}>
                     <InputWrapper>
-                        <label htmlFor="number">License #</label>
+                        <label htmlFor="date">Date</label>
                         <input
-                            type="text"
-                            id="number"
+                            type="date"
+                            id="date"
                             defaultValue={
-                                selectedPuppyInfo.license
-                                    ? selectedPuppyInfo.license.number
+                                selectedPuppyInfo.spay
+                                    ? selectedPuppyInfo.spay.date
                                     : null
                             }
-                            onChange={(ev) => handleChange(ev, 'number')}
+                            onChange={(ev) => handleChange(ev, 'date')}
                             required
                             disabled={
-                                selectedPuppyInfo.license && !isEditOn
+                                selectedPuppyInfo.spay && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </InputWrapper>
                     <InputWrapper>
-                        <label htmlFor="issueDate">Issue date</label>
-                        <input
-                            type="date"
-                            id="issueDate"
-                            defaultValue={
-                                selectedPuppyInfo.license
-                                    ? selectedPuppyInfo.license.issueDate
-                                    : null
-                            }
-                            onChange={(ev) => handleChange(ev, 'issueDate')}
-                            disabled={
-                                selectedPuppyInfo.license && !isEditOn
-                                    ? true
-                                    : false
-                            }
-                        />
-                    </InputWrapper>
-                    <InputWrapper>
-                        <label htmlFor="expireDate">Expire date</label>
-                        <input
-                            type="date"
-                            id="expireDate"
-                            defaultValue={
-                                selectedPuppyInfo.license
-                                    ? selectedPuppyInfo.license.expireDate
-                                    : null
-                            }
-                            onChange={(ev) => handleChange(ev, 'expireDate')}
-                            disabled={
-                                selectedPuppyInfo.license && !isEditOn
-                                    ? true
-                                    : false
-                            }
-                        />
-                    </InputWrapper>
-                    <InputWrapper>
-                        <label htmlFor="issueBy">Issued by</label>
+                        <label htmlFor="clinic">Clinic name</label>
                         <input
                             type="text"
-                            id="issueBy"
+                            id="clinic"
                             defaultValue={
-                                selectedPuppyInfo.license
-                                    ? selectedPuppyInfo.license.issueBy
+                                selectedPuppyInfo.spay
+                                    ? selectedPuppyInfo.spay.clinic
                                     : null
                             }
-                            onChange={(ev) => handleChange(ev, 'issueBy')}
+                            onChange={(ev) => handleChange(ev, 'clinic')}
                             disabled={
-                                selectedPuppyInfo.license && !isEditOn
+                                selectedPuppyInfo.spay && !isEditOn
+                                    ? true
+                                    : false
+                            }
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <label htmlFor="contact">Clinic contact</label>
+                        <input
+                            type="text"
+                            id="contact"
+                            defaultValue={
+                                selectedPuppyInfo.spay
+                                    ? selectedPuppyInfo.spay.contact
+                                    : null
+                            }
+                            onChange={(ev) => handleChange(ev, 'contact')}
+                            disabled={
+                                selectedPuppyInfo.spay && !isEditOn
                                     ? true
                                     : false
                             }
@@ -162,19 +144,17 @@ const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                     </InputWrapper>
                     <FileInputWrapper>
                         <label htmlFor="file">Document</label>
-                        {selectedPuppyInfo.license &&
-                        selectedPuppyInfo.license.file &&
+                        {selectedPuppyInfo.spay &&
+                        selectedPuppyInfo.spay.file &&
                         !isEditOn ? (
                             <button
                                 onClick={() =>
-                                    window.open(selectedPuppyInfo.license.file)
+                                    window.open(selectedPuppyInfo.spay.file)
                                 }
                             >
                                 Open
                             </button>
-                        ) : selectedPuppyInfo.license &&
-                          !selectedPuppyInfo.license.file &&
-                          !isEditOn ? null : (
+                        ) : (
                             <div>
                                 <button>Upload file</button>
                                 <input
@@ -191,24 +171,24 @@ const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                         <textarea
                             id="memo"
                             defaultValue={
-                                selectedPuppyInfo.license
-                                    ? selectedPuppyInfo.license.memo
+                                selectedPuppyInfo.spay
+                                    ? selectedPuppyInfo.spay.memo
                                     : null
                             }
                             onChange={(ev) => handleChange(ev, 'memo')}
                             disabled={
-                                selectedPuppyInfo.license && !isEditOn
+                                selectedPuppyInfo.spay && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </TextareaWrapper>
                     <ButtonWrapper>
-                        {selectedPuppyInfo.license && !isEditOn ? (
+                        {selectedPuppyInfo.spay && !isEditOn ? (
                             <button onClick={(ev) => handleEditBtn(ev, true)}>
                                 Edit
                             </button>
-                        ) : !selectedPuppyInfo.license ? (
+                        ) : !selectedPuppyInfo.spay ? (
                             <button className="fill" type="submit">
                                 Save
                             </button>
@@ -231,4 +211,4 @@ const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
     );
 };
 
-export default License;
+export default Spay;

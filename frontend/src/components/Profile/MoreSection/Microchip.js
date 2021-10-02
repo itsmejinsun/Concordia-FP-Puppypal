@@ -189,6 +189,10 @@ const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                             <button onClick={(ev) => handleEditBtn(ev, true)}>
                                 Edit
                             </button>
+                        ) : !selectedPuppyInfo.microchip ? (
+                            <button className="fill" type="submit">
+                                Save
+                            </button>
                         ) : (
                             <>
                                 <button

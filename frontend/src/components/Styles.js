@@ -233,7 +233,7 @@ export const InputWrapper = styled.div`
     }
 
     input {
-        max-width: 200px;
+        max-width: 240px;
         flex: 2;
         font-family: inherit;
         font-size: 1rem;
@@ -300,7 +300,7 @@ export const TextareaWrapper = styled.div`
 export const ButtonWrapper = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: 0.25rem;
 
     button {
         color: var(--button-color-primary);
@@ -308,7 +308,7 @@ export const ButtonWrapper = styled.div`
         border: solid 2px var(--button-color-primary);
         border-radius: 10px;
         min-width: 110px;
-        padding: 0.5rem 1rem;
+        padding: 0.25rem 1rem;
         margin: 0 0.5rem;
         font-family: inherit;
         font-size: 1.2rem;

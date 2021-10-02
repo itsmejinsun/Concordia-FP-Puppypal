@@ -292,7 +292,6 @@ const addLicense = async (req, res) => {
                 tags: ['license', puppyId],
             });
 
-            console.log(uploadedRes);
             if (!uploadedRes)
                 sendResponse(res, 400, null, 'Pet license file upload fail');
         }
@@ -329,6 +328,108 @@ const addLicense = async (req, res) => {
     }
 };
 
+const addSpay = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    const spay = req.body.data;
+
+    try {
+        // Upload file to Cloudinary
+        let uploadedRes;
+        if (spay.file) {
+            uploadedRes = await cloudinary.uploader.upload(spay.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['spay', puppyId],
+            });
+
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Spay(Neuter) file upload fail');
+        }
+
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).updateOne(
+            { type: 'puppy', _id: puppyId, active: true },
+            {
+                $set: {
+                    spay: {
+                        date: spay.date,
+                        clinic: spay.clinic,
+                        contact: spay.contact,
+                        file: uploadedRes ? uploadedRes.secure_url : '',
+                        memo: spay.memo,
+                        update_at: moment().format(),
+                    },
+                },
+            }
+        );
+        assert.equal(1, updateData.modifiedCount);
+
+        return sendResponse(res, 200, spay);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with post spay(neuter) request'
+        );
+    }
+};
+
+const addInsurance = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    const insurance = req.body.data;
+
+    try {
+        // Upload file to Cloudinary
+        let uploadedRes;
+        if (insurance.file) {
+            uploadedRes = await cloudinary.uploader.upload(insurance.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['insurance', puppyId],
+            });
+
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Insurance file upload fail');
+        }
+
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).updateOne(
+            { type: 'puppy', _id: puppyId, active: true },
+            {
+                $set: {
+                    insurance: {
+                        number: insurance.number,
+                        name: insurance.name,
+                        startDate: insurance.startDate,
+                        endDate: insurance.endDate,
+                        company: insurance.company,
+                        file: uploadedRes ? uploadedRes.secure_url : '',
+                        memo: insurance.memo,
+                        update_at: moment().format(),
+                    },
+                },
+            }
+        );
+        assert.equal(1, updateData.modifiedCount);
+
+        return sendResponse(res, 200, insurance);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with post insurance request'
+        );
+    }
+};
+
 module.exports = {
     addUser,
     addPuppy,
@@ -339,4 +440,6 @@ module.exports = {
     addProfilePic,
     addMicrochip,
     addLicense,
+    addSpay,
+    addInsurance,
 };
