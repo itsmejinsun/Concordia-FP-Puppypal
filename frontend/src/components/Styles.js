@@ -139,8 +139,8 @@ export const ModalSubWrapper = styled.div`
         font-size: 1.5rem;
         font-weight: bold;
         position: absolute;
-        top: 0;
-        right: -30px;
+        top: 5px;
+        right: 5px;
         cursor: pointer;
     }
 
@@ -250,25 +250,36 @@ export const InputWrapper = styled.div`
 export const FileInputWrapper = styled.div`
     position: relative;
     overflow: hidden;
-    display: inline-block;
 
     button {
         border: 1px solid var(--main-font-color);
         color: var(--main-font-color);
         background: none;
-        padding: 0.2rem 1rem;
+        min-width: 75px;
+        padding: 0.2rem 1.5rem;
         margin-left: 3rem;
         border-radius: 10px;
         font-size: 1rem;
         cursor: pointer;
+        transition: 0.2s ease-in;
+
+        &:hover {
+            color: #fff;
+            background-color: var(--main-font-color);
+        }
     }
 
-    input {
-        font-size: 100px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        opacity: 0;
+    div {
+        position: relative;
+        display: inline-block;
+
+        input {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
     }
 `;
 
@@ -289,4 +300,51 @@ export const TextareaWrapper = styled.div`
 export const ButtonWrapper = styled.div`
     display: flex;
     justify-content: center;
+    margin-top: 1rem;
+
+    button {
+        color: var(--button-color-primary);
+        background: none;
+        border: solid 2px var(--button-color-primary);
+        border-radius: 10px;
+        min-width: 110px;
+        padding: 0.5rem 1rem;
+        margin: 0 0.5rem;
+        font-family: inherit;
+        font-size: 1.2rem;
+        cursor: pointer;
+
+        &.fill {
+            color: #fff;
+            background-color: var(--button-color-primary);
+        }
+
+        &:hover,
+        &:focus {
+            outline: none;
+            animation: shake 1s;
+            transform-origin: center;
+        }
+    }
+
+    @keyframes shake {
+        10%,
+        90% {
+            transform: rotate(-2deg);
+        }
+        20%,
+        80% {
+            transform: rotate(2deg);
+        }
+
+        30%,
+        50%,
+        70% {
+            transform: rotate(-2deg);
+        }
+        40%,
+        60% {
+            transform: rotate(2deg);
+        }
+    }
 `;

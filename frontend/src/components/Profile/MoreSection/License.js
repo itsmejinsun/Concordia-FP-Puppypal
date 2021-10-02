@@ -13,26 +13,28 @@ import { PuppyContext } from '../../PuppyContext';
 
 const initialState = {
     number: null,
-    date: null,
-    place: null,
+    issueDate: null,
+    expireDate: null,
+    issueBy: null,
     file: null,
     memo: null,
 };
 
-const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
-    const [microchipData, setMicrochipData] = useState(initialState);
+const License = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
+    const [licenseData, setLicenseData] = useState(initialState);
     const [isEditOn, setIsEditOn] = useState(false);
 
+    console.log(licenseData);
     const { selectedPuppyInfo, handleGetPuppy } = useContext(PuppyContext);
 
     // Function that will close modal
     const handleModalClose = () => {
-        setIsMoreSectionOpen({ ...isMoreSectionOpen, microchip: false });
+        setIsMoreSectionOpen({ ...isMoreSectionOpen, license: false });
     };
 
     // Function that will save input data
     const handleChange = (ev, item) => {
-        setMicrochipData({ ...microchipData, [item]: ev.target.value });
+        setLicenseData({ ...licenseData, [item]: ev.target.value });
     };
 
     // Function that will save file input data
@@ -41,7 +43,7 @@ const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
 
         const reader = new FileReader();
         reader.onloadend = () => {
-            setMicrochipData({ ...microchipData, file: reader.result });
+            setLicenseData({ ...licenseData, file: reader.result });
         };
         reader.readAsDataURL(selected);
     };
@@ -50,24 +52,24 @@ const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
         ev.preventDefault();
 
         setIsEditOn(value);
-        setMicrochipData(selectedPuppyInfo.microchip);
+        setLicenseData(selectedPuppyInfo.license);
     };
 
     // Funtion that will send inserted data to database
     const handleSubmit = (ev) => {
         ev.preventDefault();
 
-        if (microchipData.number) {
+        if (licenseData.number) {
             fetch(
                 `/api/${localStorage.getItem(
                     'id'
-                )}/puppy/${localStorage.getItem('pup')}/microchip`,
+                )}/puppy/${localStorage.getItem('pup')}/license`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ data: microchipData }),
+                    body: JSON.stringify({ data: licenseData }),
                 }
             )
                 .then((res) => res.json())
@@ -84,58 +86,76 @@ const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                 <button className="close" onClick={() => handleModalClose()}>
                     ⨉
                 </button>
-                <h2>Microchip</h2>
+                <h2>Pet License</h2>
                 <form onSubmit={(ev) => handleSubmit(ev)}>
                     <InputWrapper>
-                        <label htmlFor="number">Microchip #</label>
+                        <label htmlFor="number">License #</label>
                         <input
                             type="text"
                             id="number"
                             defaultValue={
-                                selectedPuppyInfo.microchip
-                                    ? selectedPuppyInfo.microchip.number
+                                selectedPuppyInfo.license
+                                    ? selectedPuppyInfo.license.number
                                     : null
                             }
                             onChange={(ev) => handleChange(ev, 'number')}
                             required
                             disabled={
-                                selectedPuppyInfo.microchip && !isEditOn
+                                selectedPuppyInfo.license && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </InputWrapper>
                     <InputWrapper>
-                        <label htmlFor="date">Register date</label>
+                        <label htmlFor="issueDate">Issue date</label>
                         <input
                             type="date"
-                            id="date"
+                            id="issueDate"
                             defaultValue={
-                                selectedPuppyInfo.microchip
-                                    ? selectedPuppyInfo.microchip.date
+                                selectedPuppyInfo.license
+                                    ? selectedPuppyInfo.license.issueDate
                                     : null
                             }
-                            onChange={(ev) => handleChange(ev, 'date')}
+                            onChange={(ev) => handleChange(ev, 'issueDate')}
                             disabled={
-                                selectedPuppyInfo.microchip && !isEditOn
+                                selectedPuppyInfo.license && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </InputWrapper>
                     <InputWrapper>
-                        <label htmlFor="place">Registered by</label>
+                        <label htmlFor="expireDate">Expire date</label>
                         <input
-                            type="text"
-                            id="place"
+                            type="date"
+                            id="expireDate"
                             defaultValue={
-                                selectedPuppyInfo.microchip
-                                    ? selectedPuppyInfo.microchip.place
+                                selectedPuppyInfo.license
+                                    ? selectedPuppyInfo.license.expireDate
                                     : null
                             }
-                            onChange={(ev) => handleChange(ev, 'place')}
+                            onChange={(ev) => handleChange(ev, 'expireDate')}
                             disabled={
-                                selectedPuppyInfo.microchip && !isEditOn
+                                selectedPuppyInfo.license && !isEditOn
+                                    ? true
+                                    : false
+                            }
+                        />
+                    </InputWrapper>
+                    <InputWrapper>
+                        <label htmlFor="issueBy">Issued by</label>
+                        <input
+                            type="text"
+                            id="issueBy"
+                            defaultValue={
+                                selectedPuppyInfo.license
+                                    ? selectedPuppyInfo.license.issueBy
+                                    : null
+                            }
+                            onChange={(ev) => handleChange(ev, 'issueBy')}
+                            disabled={
+                                selectedPuppyInfo.license && !isEditOn
                                     ? true
                                     : false
                             }
@@ -143,19 +163,19 @@ const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                     </InputWrapper>
                     <FileInputWrapper>
                         <label htmlFor="file">Document</label>
-                        {selectedPuppyInfo.microchip &&
-                        selectedPuppyInfo.microchip.file &&
+                        {selectedPuppyInfo.license &&
+                        selectedPuppyInfo.license.file &&
                         !isEditOn ? (
                             <button
                                 onClick={() =>
-                                    window.open(
-                                        selectedPuppyInfo.microchip.file
-                                    )
+                                    window.open(selectedPuppyInfo.license.file)
                                 }
                             >
                                 Open
                             </button>
-                        ) : (
+                        ) : selectedPuppyInfo.license &&
+                          !selectedPuppyInfo.license.file &&
+                          !isEditOn ? null : (
                             <div>
                                 <button>Upload file</button>
                                 <input
@@ -172,20 +192,20 @@ const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                         <textarea
                             id="memo"
                             defaultValue={
-                                selectedPuppyInfo.microchip
-                                    ? selectedPuppyInfo.microchip.memo
+                                selectedPuppyInfo.license
+                                    ? selectedPuppyInfo.license.memo
                                     : null
                             }
                             onChange={(ev) => handleChange(ev, 'memo')}
                             disabled={
-                                selectedPuppyInfo.microchip && !isEditOn
+                                selectedPuppyInfo.license && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </TextareaWrapper>
                     <ButtonWrapper>
-                        {selectedPuppyInfo.microchip && !isEditOn ? (
+                        {selectedPuppyInfo.license && !isEditOn ? (
                             <button onClick={(ev) => handleEditBtn(ev, true)}>
                                 Edit
                             </button>
@@ -208,4 +228,4 @@ const Microchip = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
     );
 };
 
-export default Microchip;
+export default License;

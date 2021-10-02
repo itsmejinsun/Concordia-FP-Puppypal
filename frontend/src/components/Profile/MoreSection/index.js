@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { DividedSection } from '../../Styles';
 import Microchip from './Microchip';
+import License from './License';
 
 const initialState = {
     microchip: false,
@@ -17,27 +18,35 @@ const MoreSection = () => {
 
     const handleSelect = (menu) => {
         setIsMoreSectionOpen({ ...isMoreSectionOpen, [menu]: true });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
-        <Wrapper>
-            <h1>More</h1>
-            <Contents>
-                <p tabIndex="0" onClick={() => handleSelect('microchip')}>
-                    Microchip
-                </p>
-                <p tabIndex="0">Dog license</p>
-                <p tabIndex="0">Spay(Neuter)</p>
-                <p tabIndex="0">Insurance</p>
-                <p tabIndex="0">Vet</p>
-            </Contents>
-            <div>
-                <button>Print Profile</button>
-            </div>
+        <>
+            <Wrapper>
+                <h1>More</h1>
+                <Contents>
+                    <p tabIndex="0" onClick={() => handleSelect('microchip')}>
+                        Microchip
+                    </p>
+                    <p tabIndex="0" onClick={() => handleSelect('license')}>
+                        Pet license
+                    </p>
+                    <p tabIndex="0">Spay(Neuter)</p>
+                    <p tabIndex="0">Insurance</p>
+                    <p tabIndex="0">Vet</p>
+                </Contents>
+                <div>
+                    <button>Print Profile</button>
+                </div>
+            </Wrapper>
             {isMoreSectionOpen.microchip && (
                 <Microchip setIsMoreSectionOpen={setIsMoreSectionOpen} />
             )}
-        </Wrapper>
+            {isMoreSectionOpen.license && (
+                <License setIsMoreSectionOpen={setIsMoreSectionOpen} />
+            )}
+        </>
     );
 };
 

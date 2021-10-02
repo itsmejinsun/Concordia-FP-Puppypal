@@ -35,9 +35,10 @@ const AddPuppy = ({ setIsAddPuppyOpen }) => {
             body: JSON.stringify(puppyInfo),
         })
             .then((res) => res.json())
-            .then((data) =>
-                data.status === 200 ? setIsAddPuppyOpen(false) : null
-            );
+            .then((data) => {
+                data.status === 200 && setIsAddPuppyOpen(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
     };
 
     return (

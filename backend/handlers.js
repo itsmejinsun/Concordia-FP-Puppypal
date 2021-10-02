@@ -230,17 +230,22 @@ const addMicrochip = async (req, res) => {
     const { userId, puppyId } = req.params;
 
     const microchip = req.body.data;
+
     try {
         // Upload file to Cloudinary
-        const uploadedRes = await cloudinary.uploader.upload(microchip.file, {
-            upload_preset: 'puppypal',
-            format: 'png',
-            tags: ['microchip', puppyId],
-        });
+        let uploadedRes;
 
-        // Post data in MongoDB
-        if (!uploadedRes) return;
+        if (microchip.file) {
+            uploadedRes = await cloudinary.uploader.upload(microchip.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['microchip', puppyId],
+            });
 
+            // Post data in MongoDB
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Microchip file upload fail');
+        }
         const db = await connectMongo();
 
         const updateData = await db.collection(userId).updateOne(
@@ -251,13 +256,14 @@ const addMicrochip = async (req, res) => {
                         number: microchip.number,
                         date: microchip.date,
                         place: microchip.place,
-                        file: uploadedRes.secure_url,
+                        file: uploadedRes ? uploadedRes.secure_url : '',
                         memo: microchip.memo,
+                        update_at: moment().format(),
                     },
-                    update_at: moment().format(),
                 },
             }
         );
+        assert.equal(1, updateData.modifiedCount);
 
         return sendResponse(res, 200, microchip);
     } catch (err) {
@@ -266,6 +272,59 @@ const addMicrochip = async (req, res) => {
             500,
             null,
             'Error occured with post microchip request'
+        );
+    }
+};
+
+const addLicense = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    const license = req.body.data;
+
+    try {
+        // Upload file to Cloudinary
+        let uploadedRes;
+
+        if (license.file) {
+            uploadedRes = await cloudinary.uploader.upload(license.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['license', puppyId],
+            });
+
+            console.log(uploadedRes);
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Pet license file upload fail');
+        }
+
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).updateOne(
+            { type: 'puppy', _id: puppyId, active: true },
+            {
+                $set: {
+                    license: {
+                        number: license.number,
+                        issueDate: license.issueDate,
+                        expireDate: license.expireDate,
+                        issueBy: license.issueBy,
+                        file: uploadedRes ? uploadedRes.secure_url : '',
+                        memo: license.memo,
+                        update_at: moment().format(),
+                    },
+                },
+            }
+        );
+        assert.equal(1, updateData.modifiedCount);
+
+        return sendResponse(res, 200, license);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with post pet license request'
         );
     }
 };
@@ -279,4 +338,5 @@ module.exports = {
     deletePuppy,
     addProfilePic,
     addMicrochip,
+    addLicense,
 };

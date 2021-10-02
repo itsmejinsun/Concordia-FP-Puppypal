@@ -22,6 +22,7 @@ const SelectedPuppy = ({ isSigninOpen }) => {
     const handleClick = (ev) => {
         ev.preventDefault();
         setIsPuppyListOpen(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     return (
         <Wrapper className={`${isSigninOpen}`}>
