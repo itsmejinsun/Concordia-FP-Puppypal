@@ -233,7 +233,7 @@ export const InputWrapper = styled.div`
     }
 
     input {
-        max-width: 240px;
+        max-width: 320px;
         flex: 2;
         font-family: inherit;
         font-size: 1rem;
@@ -287,12 +287,12 @@ export const TextareaWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
 
     textarea {
         width: 100%;
         padding: 0.25rem;
-        margin: 0.25rem 0 1rem;
+        margin: 0.25rem 0;
         font-family: inherit;
     }
 `;
@@ -300,7 +300,7 @@ export const TextareaWrapper = styled.div`
 export const ButtonWrapper = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 0.25rem;
+    margin-top: 0.75rem;
 
     button {
         color: var(--button-color-primary);

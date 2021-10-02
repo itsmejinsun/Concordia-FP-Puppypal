@@ -430,6 +430,38 @@ const addInsurance = async (req, res) => {
     }
 };
 
+const addVet = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    const vet = req.body.data;
+
+    try {
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).updateOne(
+            { type: 'puppy', _id: puppyId, active: true },
+            {
+                $set: {
+                    vet: {
+                        name: vet.name,
+                        phone: vet.phone,
+                        address: vet.address,
+                        web: vet.web,
+                        memo: vet.memo,
+                        update_at: moment().format(),
+                    },
+                },
+            }
+        );
+        assert.equal(1, updateData.modifiedCount);
+
+        return sendResponse(res, 200, vet);
+    } catch (err) {
+        sendResponse(res, 500, null, 'Error occured with post vet request');
+    }
+};
+
 module.exports = {
     addUser,
     addPuppy,
@@ -442,4 +474,5 @@ module.exports = {
     addLicense,
     addSpay,
     addInsurance,
+    addVet,
 };

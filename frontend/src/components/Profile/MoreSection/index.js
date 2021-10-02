@@ -6,6 +6,7 @@ import Microchip from './Microchip';
 import License from './License';
 import Spay from './Spay';
 import Insurance from './Insurance';
+import VetClinic from './VetClinic';
 
 const initialState = {
     microchip: false,
@@ -40,7 +41,9 @@ const MoreSection = () => {
                     <p tabIndex="0" onClick={() => handleSelect('insurance')}>
                         Insurance
                     </p>
-                    <p tabIndex="0">Vet</p>
+                    <p tabIndex="0" onClick={() => handleSelect('vet')}>
+                        Veterinary clinic
+                    </p>
                 </Contents>
                 <div>
                     <button>Print Profile</button>
@@ -57,6 +60,9 @@ const MoreSection = () => {
             )}
             {isMoreSectionOpen.insurance && (
                 <Insurance setIsMoreSectionOpen={setIsMoreSectionOpen} />
+            )}
+            {isMoreSectionOpen.vet && (
+                <VetClinic setIsMoreSectionOpen={setIsMoreSectionOpen} />
             )}
         </>
     );

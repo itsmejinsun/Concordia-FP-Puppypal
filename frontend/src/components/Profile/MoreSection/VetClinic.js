@@ -4,7 +4,6 @@ import {
     ModalWrapper,
     ModalSubWrapper,
     InputWrapper,
-    FileInputWrapper,
     TextareaWrapper,
     ButtonWrapper,
 } from '../../Styles';
@@ -12,62 +11,51 @@ import {
 import { PuppyContext } from '../../PuppyContext';
 
 const initialState = {
-    date: null,
-    clinic: null,
-    contact: null,
-    file: null,
+    name: null,
+    phone: null,
+    address: null,
+    web: null,
     memo: null,
 };
 
-const Spay = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
-    const [spayData, setSpayData] = useState(initialState);
+const VetClinic = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
+    const [vetData, setVetData] = useState(initialState);
     const [isEditOn, setIsEditOn] = useState(false);
 
     const { selectedPuppyInfo, handleGetPuppy } = useContext(PuppyContext);
 
     // Function that will close modal
     const handleModalClose = () => {
-        setIsMoreSectionOpen({ ...isMoreSectionOpen, spay: false });
+        setIsMoreSectionOpen({ ...isMoreSectionOpen, vet: false });
     };
 
     // Function that will save input data
     const handleChange = (ev, item) => {
-        setSpayData({ ...spayData, [item]: ev.target.value });
-    };
-
-    // Function that will save file input data
-    const handleFileChange = (ev) => {
-        const selected = ev.target.files[0];
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setSpayData({ ...spayData, file: reader.result });
-        };
-        reader.readAsDataURL(selected);
+        setVetData({ ...vetData, [item]: ev.target.value });
     };
 
     const handleEditBtn = (ev, value) => {
         ev.preventDefault();
 
         setIsEditOn(value);
-        setSpayData(selectedPuppyInfo.spay);
+        setVetData(selectedPuppyInfo.vet);
     };
 
     // Funtion that will send inserted data to database
     const handleSubmit = (ev) => {
         ev.preventDefault();
 
-        if (spayData.date) {
+        if (vetData.name) {
             fetch(
                 `/api/${localStorage.getItem(
                     'id'
-                )}/puppy/${localStorage.getItem('pup')}/spay`,
+                )}/puppy/${localStorage.getItem('pup')}/vet`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ data: spayData }),
+                    body: JSON.stringify({ data: vetData }),
                 }
             )
                 .then((res) => res.json())
@@ -84,110 +72,106 @@ const Spay = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
                 <button className="close" onClick={() => handleModalClose()}>
                     ⨉
                 </button>
-                <h2>Spay(Neuter)</h2>
+                <h2>Veterinary Clinic</h2>
                 <form onSubmit={(ev) => handleSubmit(ev)}>
                     <InputWrapper>
-                        <label htmlFor="date">Date</label>
+                        <label htmlFor="name">Name</label>
                         <input
-                            type="date"
-                            id="date"
+                            type="text"
+                            id="name"
                             defaultValue={
-                                selectedPuppyInfo.spay
-                                    ? selectedPuppyInfo.spay.date
+                                selectedPuppyInfo.vet
+                                    ? selectedPuppyInfo.vet.name
                                     : null
                             }
-                            onChange={(ev) => handleChange(ev, 'date')}
+                            onChange={(ev) => handleChange(ev, 'name')}
                             required
                             disabled={
-                                selectedPuppyInfo.spay && !isEditOn
+                                selectedPuppyInfo.vet && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </InputWrapper>
                     <InputWrapper>
-                        <label htmlFor="clinic">Clinic name</label>
+                        <label htmlFor="phone">Phone</label>
                         <input
                             type="text"
-                            id="clinic"
+                            id="phone"
                             defaultValue={
-                                selectedPuppyInfo.spay
-                                    ? selectedPuppyInfo.spay.clinic
+                                selectedPuppyInfo.vet
+                                    ? selectedPuppyInfo.vet.phone
                                     : null
                             }
-                            onChange={(ev) => handleChange(ev, 'clinic')}
+                            onChange={(ev) => handleChange(ev, 'phone')}
+                            required
                             disabled={
-                                selectedPuppyInfo.spay && !isEditOn
+                                selectedPuppyInfo.vet && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </InputWrapper>
+
+                    <TextareaWrapper>
+                        <label htmlFor="address">Address</label>
+                        <textarea
+                            id="address"
+                            defaultValue={
+                                selectedPuppyInfo.vet
+                                    ? selectedPuppyInfo.vet.address
+                                    : null
+                            }
+                            onChange={(ev) => handleChange(ev, 'address')}
+                            disabled={
+                                selectedPuppyInfo.vet && !isEditOn
+                                    ? true
+                                    : false
+                            }
+                        />
+                    </TextareaWrapper>
                     <InputWrapper>
-                        <label htmlFor="contact">Clinic contact</label>
+                        <label htmlFor="web">Website</label>
                         <input
-                            type="text"
-                            id="contact"
+                            type="url"
+                            id="web"
                             defaultValue={
-                                selectedPuppyInfo.spay
-                                    ? selectedPuppyInfo.spay.contact
+                                selectedPuppyInfo.vet
+                                    ? selectedPuppyInfo.vet.web
                                     : null
                             }
-                            onChange={(ev) => handleChange(ev, 'contact')}
+                            onChange={(ev) => handleChange(ev, 'web')}
+                            required
                             disabled={
-                                selectedPuppyInfo.spay && !isEditOn
+                                selectedPuppyInfo.vet && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </InputWrapper>
-                    <FileInputWrapper>
-                        <label htmlFor="file">Document</label>
-                        {selectedPuppyInfo.spay &&
-                        selectedPuppyInfo.spay.file &&
-                        !isEditOn ? (
-                            <button
-                                onClick={() =>
-                                    window.open(selectedPuppyInfo.spay.file)
-                                }
-                            >
-                                Open
-                            </button>
-                        ) : (
-                            <div>
-                                <button>Upload file</button>
-                                <input
-                                    type="file"
-                                    id="file"
-                                    accept="image/*,.pdf"
-                                    onChange={(ev) => handleFileChange(ev)}
-                                />
-                            </div>
-                        )}
-                    </FileInputWrapper>
                     <TextareaWrapper>
                         <label htmlFor="memo">Memo</label>
                         <textarea
                             id="memo"
                             defaultValue={
-                                selectedPuppyInfo.spay
-                                    ? selectedPuppyInfo.spay.memo
+                                selectedPuppyInfo.vet
+                                    ? selectedPuppyInfo.vet.memo
                                     : null
                             }
                             onChange={(ev) => handleChange(ev, 'memo')}
                             disabled={
-                                selectedPuppyInfo.spay && !isEditOn
+                                selectedPuppyInfo.vet && !isEditOn
                                     ? true
                                     : false
                             }
                         />
                     </TextareaWrapper>
                     <ButtonWrapper>
-                        {selectedPuppyInfo.spay && !isEditOn ? (
+                        {selectedPuppyInfo.vet && !isEditOn ? (
                             <button onClick={(ev) => handleEditBtn(ev, true)}>
                                 Edit
                             </button>
-                        ) : !selectedPuppyInfo.spay ? (
+                        ) : !selectedPuppyInfo.vet ? (
                             <button className="fill" type="submit">
                                 Save
                             </button>
@@ -210,4 +194,4 @@ const Spay = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
     );
 };
 
-export default Spay;
+export default VetClinic;
