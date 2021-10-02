@@ -8,6 +8,7 @@ const {
     putPuppy,
     deletePuppy,
     addProfilePic,
+    addMicrochip,
 } = require('./handlers');
 
 router.post('/api/user', addUser);
@@ -19,6 +20,7 @@ router.put('/api/:userId/puppy/:puppyId', putPuppy);
 router.delete('/api/:userId/puppy/:puppyId', deletePuppy);
 
 router.post('/api/:userId/puppy/:puppyId/profilePic', addProfilePic);
+router.post('/api/:userId/puppy/:puppyId/microchip', addMicrochip);
 
 router.get('*', (req, res) => {
     res.status(404).json({

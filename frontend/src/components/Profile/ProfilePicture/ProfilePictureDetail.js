@@ -15,9 +15,6 @@ const ProfilePictureDetail = () => {
         setIsPuppyChanged,
     } = useContext(PuppyContext);
 
-    console.log('1', uploadProfilePic);
-    console.log('2', selectedPuppyInfo);
-
     const handleImgChange = (ev) => {
         const selected = ev.target.files[0];
         const fileType = ['image/png', 'image/jpeg', 'image/jpg'];

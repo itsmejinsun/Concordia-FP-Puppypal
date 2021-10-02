@@ -189,25 +189,16 @@ const addProfilePic = async (req, res) => {
     const profilePic = req.body.data;
 
     try {
-        console.log('here1');
         // Upload file to Cloudinary
-        const uploadedRes = await cloudinary.uploader.upload(
-            profilePic,
-            {
-                upload_preset: 'puppypal',
-                transformation: {
-                    width: 200,
-                    height: 200,
-                    crop: 'fill',
-                },
-                tags: ['profile', puppyId],
+        const uploadedRes = await cloudinary.uploader.upload(profilePic, {
+            upload_preset: 'puppypal',
+            transformation: {
+                width: 200,
+                height: 200,
+                crop: 'fill',
             },
-            function (error, result) {
-                console.log(result);
-            }
-        );
-
-        console.log('here2');
+            tags: ['profile', puppyId],
+        });
 
         // Update profile picture url in MongoDB
         if (!uploadedRes) return;
@@ -224,7 +215,6 @@ const addProfilePic = async (req, res) => {
             }
         );
 
-        console.log('here3');
         return sendResponse(res, 200, uploadedRes.secure_url);
     } catch (err) {
         sendResponse(
@@ -232,6 +222,50 @@ const addProfilePic = async (req, res) => {
             500,
             null,
             "Error occured with update puppy's profile picture request"
+        );
+    }
+};
+
+const addMicrochip = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    const microchip = req.body.data;
+    try {
+        // Upload file to Cloudinary
+        const uploadedRes = await cloudinary.uploader.upload(microchip.file, {
+            upload_preset: 'puppypal',
+            format: 'png',
+            tags: ['microchip', puppyId],
+        });
+
+        // Post data in MongoDB
+        if (!uploadedRes) return;
+
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).updateOne(
+            { type: 'puppy', _id: puppyId, active: true },
+            {
+                $set: {
+                    microchip: {
+                        number: microchip.number,
+                        date: microchip.date,
+                        place: microchip.place,
+                        file: uploadedRes.secure_url,
+                        memo: microchip.memo,
+                    },
+                    update_at: moment().format(),
+                },
+            }
+        );
+
+        return sendResponse(res, 200, microchip);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with post microchip request'
         );
     }
 };
@@ -244,4 +278,5 @@ module.exports = {
     putPuppy,
     deletePuppy,
     addProfilePic,
+    addMicrochip,
 };

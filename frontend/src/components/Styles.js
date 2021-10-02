@@ -139,9 +139,13 @@ export const ModalSubWrapper = styled.div`
         font-size: 1.5rem;
         font-weight: bold;
         position: absolute;
-        top: 5px;
-        right: 5px;
+        top: 0;
+        right: -30px;
         cursor: pointer;
+    }
+
+    h2 {
+        margin-top: 1rem;
     }
 
     @media (min-width: 992px) {
@@ -211,4 +215,78 @@ export const DividedModalSubWrapper = styled.div`
         font-size: 1rem;
         margin-top: 1rem;
     }
+`;
+
+export const InputWrapper = styled.div`
+    width: 100%;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+
+    &:first-of-type {
+        margin-top: 0;
+    }
+
+    label {
+        flex: 1;
+        margin-right: 1rem;
+    }
+
+    input {
+        max-width: 200px;
+        flex: 2;
+        font-family: inherit;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    input:disabled {
+        background: none;
+        border: none;
+        font-weight: bold;
+    }
+`;
+
+export const FileInputWrapper = styled.div`
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+
+    button {
+        border: 1px solid var(--main-font-color);
+        color: var(--main-font-color);
+        background: none;
+        padding: 0.2rem 1rem;
+        margin-left: 3rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    input {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+`;
+
+export const TextareaWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0.5rem;
+
+    textarea {
+        width: 100%;
+        padding: 0.25rem;
+        margin: 0.25rem 0 1rem;
+        font-family: inherit;
+    }
+`;
+
+export const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: center;
 `;

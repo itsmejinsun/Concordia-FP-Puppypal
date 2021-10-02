@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { DividedSection } from '../../Styles';
+import Microchip from './Microchip';
+
+const initialState = {
+    microchip: false,
+    license: false,
+    spay: false,
+    insurance: false,
+    vet: false,
+};
 
 const MoreSection = () => {
+    const [isMoreSectionOpen, setIsMoreSectionOpen] = useState(initialState);
+
+    const handleSelect = (menu) => {
+        setIsMoreSectionOpen({ ...isMoreSectionOpen, [menu]: true });
+    };
+
     return (
         <Wrapper>
             <h1>More</h1>
             <Contents>
-                <p tabIndex="0">Microchip</p>
+                <p tabIndex="0" onClick={() => handleSelect('microchip')}>
+                    Microchip
+                </p>
                 <p tabIndex="0">Dog license</p>
                 <p tabIndex="0">Spay(Neuter)</p>
                 <p tabIndex="0">Insurance</p>
@@ -17,6 +34,9 @@ const MoreSection = () => {
             <div>
                 <button>Print Profile</button>
             </div>
+            {isMoreSectionOpen.microchip && (
+                <Microchip setIsMoreSectionOpen={setIsMoreSectionOpen} />
+            )}
         </Wrapper>
     );
 };
