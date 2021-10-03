@@ -8,6 +8,7 @@ import License from './License';
 import Spay from './Spay';
 import Insurance from './Insurance';
 import VetClinic from './VetClinic';
+import PrintProfile from './PrintProfile/index';
 
 const initialState = {
     microchip: false,
@@ -19,6 +20,8 @@ const initialState = {
 
 const MoreSection = () => {
     const [isMoreSectionOpen, setIsMoreSectionOpen] = useState(initialState);
+    const [isPrintOpen, setIsPrintOpen] = useState(false);
+
     const { selectedPuppyInfo } = useContext(PuppyContext);
 
     const handleSelect = (menu) => {
@@ -73,7 +76,9 @@ const MoreSection = () => {
                     </p>
                 </Contents>
                 <div>
-                    <button>Print Profile</button>
+                    <button onClick={() => setIsPrintOpen(true)}>
+                        Print Profile
+                    </button>
                 </div>
             </Wrapper>
             {isMoreSectionOpen.microchip && (
@@ -91,6 +96,7 @@ const MoreSection = () => {
             {isMoreSectionOpen.vet && (
                 <VetClinic setIsMoreSectionOpen={setIsMoreSectionOpen} />
             )}
+            {isPrintOpen && <PrintProfile setIsPrintOpen={setIsPrintOpen} />}
         </>
     );
 };

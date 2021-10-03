@@ -51,6 +51,7 @@ export default createGlobalStyle`
       line-height: 1;
       display: flex;
       justify-content: center;
+      -webkit-print-color-adjust: exact !important;
 
   }
   ol, ul {
