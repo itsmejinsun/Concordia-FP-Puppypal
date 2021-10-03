@@ -348,3 +348,39 @@ export const ButtonWrapper = styled.div`
         }
     }
 `;
+
+export const PuppyTopWrapper = styled.div`
+    position: absolute;
+    top: 10px;
+    right: 50px;
+
+    img.puppy {
+        width: 100px;
+        transform: rotate(-45deg);
+        position: relative;
+        z-index: -1;
+    }
+
+    @media (min-width: 688px) {
+        right: 90px;
+    }
+
+    div {
+        img {
+            width: 20px;
+        }
+
+        img.paw-left {
+            position: absolute;
+            top: 82px;
+            right: 70px;
+            z-index: 1;
+        }
+        img.paw-right {
+            position: absolute;
+            top: 82px;
+            right: 25px;
+            z-index: 1;
+        }
+    }
+`;

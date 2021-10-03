@@ -40,6 +40,8 @@ const MenuNav = () => {
 };
 
 const Wrapper = styled.div`
+    position: relative;
+
     @media (min-width: 688px) {
         flex: 1;
         min-width: 280px;

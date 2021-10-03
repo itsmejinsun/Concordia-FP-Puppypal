@@ -71,7 +71,6 @@ export default createGlobalStyle`
   }
 
 #root {
-    background-color: #fff;
     max-width: 1600px;
     min-width: 480px;
     width: 100%;
