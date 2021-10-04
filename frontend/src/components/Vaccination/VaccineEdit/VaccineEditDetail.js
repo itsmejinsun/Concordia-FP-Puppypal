@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const initialState = {
@@ -12,23 +12,44 @@ const initialState = {
     nextVisitTime: null,
 };
 
-const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
+const VaccineEditDetail = ({
+    selectedVaccine,
+    isVaccineEditted,
+    setIsVaccineEditted,
+}) => {
     const [inputData, setInputData] = useState(initialState);
+    const [isEditOn, setIsEditOn] = useState(false);
+
+    useEffect(() => {
+        fetch(
+            `/api/${localStorage.getItem('id')}/puppy/${localStorage.getItem(
+                'pup'
+            )}/vaccine/${selectedVaccine}`
+        )
+            .then((res) => res.json())
+            .then((data) => setInputData(data.data));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isEditOn]);
 
     // Function that will save input data
     const handleChange = (ev, key) => {
-        setInputData({ ...inputData, [key]: ev.target.value.trim() });
+        setInputData({ ...inputData, [key]: ev.target.value });
     };
 
     // Function that will save file input data
     const handleFileChange = (ev) => {
         const selected = ev.target.files[0];
-
         const reader = new FileReader();
         reader.onloadend = () => {
             setInputData({ ...inputData, file: reader.result });
         };
         reader.readAsDataURL(selected);
+    };
+
+    const handleEdit = (ev, value) => {
+        ev.preventDefault();
+        setIsEditOn(value);
     };
 
     // Funtion that will send to database
@@ -39,9 +60,11 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
             fetch(
                 `/api/${localStorage.getItem(
                     'id'
-                )}/puppy/${localStorage.getItem('pup')}/vaccine`,
+                )}/puppy/${localStorage.getItem(
+                    'pup'
+                )}/vaccine/${selectedVaccine}`,
                 {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -50,14 +73,15 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
             )
                 .then((res) => res.json())
                 .then((data) => {
-                    setIsVaccineAdded(!isVaccineAdded);
+                    setIsVaccineEditted(!isVaccineEditted);
+                    setIsEditOn(false);
                 });
         }
     };
 
     return (
         <Wrapper>
-            <h2>Add Vaccination</h2>
+            <h2>Edit Vaccination</h2>
             <SubWrapper>
                 <form onSubmit={handleSubmit}>
                     <InputWrapperLine>
@@ -67,7 +91,9 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
                                 type="date"
                                 id="date"
                                 onChange={(ev) => handleChange(ev, 'date')}
+                                defaultValue={inputData ? inputData.date : null}
                                 required
+                                disabled={isEditOn ? false : true}
                             ></input>
                         </InputWrapperCol>
 
@@ -77,6 +103,8 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
                                 type="text"
                                 id="vet"
                                 onChange={(ev) => handleChange(ev, 'vet')}
+                                defaultValue={inputData ? inputData.vet : null}
+                                disabled={isEditOn ? false : true}
                             ></input>
                         </InputWrapperCol>
                     </InputWrapperLine>
@@ -88,11 +116,27 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
                                 id="category"
                                 onChange={(ev) => handleChange(ev, 'category')}
                                 required
+                                disabled={isEditOn ? false : true}
                             >
                                 <option>Select</option>
-                                <option value="vaccine">Vaccine</option>
-                                <option value="dewormer">Dewormer</option>
-                                <option value="other">Other</option>
+                                <option
+                                    value="vaccine"
+                                    selected={inputData.category === 'vaccine'}
+                                >
+                                    Vaccine
+                                </option>
+                                <option
+                                    value="dewormer"
+                                    selected={inputData.category === 'dewormer'}
+                                >
+                                    Dewormer
+                                </option>
+                                <option
+                                    value="other"
+                                    selected={inputData.category === 'other'}
+                                >
+                                    Other
+                                </option>
                             </select>
                         </InputWrapperCol>
 
@@ -102,22 +146,38 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
                                 type="text"
                                 id="name"
                                 onChange={(ev) => handleChange(ev, 'name')}
+                                defaultValue={inputData ? inputData.name : null}
                                 required
+                                disabled={isEditOn ? false : true}
                             ></input>
                         </InputWrapperCol>
                     </InputWrapperLine>
 
                     <FileInputWrapper>
                         <label htmlFor="file">Document</label>
-                        <div>
-                            <button>Upload file</button>
-                            <input
-                                type="file"
-                                id="file"
-                                accept="image/*,.pdf"
-                                onChange={(ev) => handleFileChange(ev, '')}
-                            />
-                        </div>
+                        {inputData && inputData.file && !isEditOn ? (
+                            <div>
+                                <button
+                                    onClick={() => window.open(inputData.file)}
+                                >
+                                    Open
+                                </button>
+                            </div>
+                        ) : inputData && !inputData.file && !isEditOn ? (
+                            <div>
+                                <button disabled>No file</button>
+                            </div>
+                        ) : (
+                            <div>
+                                <button>Upload file</button>
+                                <input
+                                    type="file"
+                                    id="file"
+                                    accept="image/*,.pdf"
+                                    onChange={(ev) => handleFileChange(ev)}
+                                />
+                            </div>
+                        )}
                     </FileInputWrapper>
 
                     <TextareaWrapper>
@@ -125,6 +185,8 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
                         <textarea
                             id="memo"
                             onChange={(ev) => handleChange(ev, 'memo')}
+                            defaultValue={inputData ? inputData.memo : null}
+                            disabled={isEditOn ? false : true}
                         ></textarea>
                     </TextareaWrapper>
 
@@ -134,17 +196,36 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
                             type="date"
                             id="nextVisitDate"
                             onChange={(ev) => handleChange(ev, 'nextVisitDate')}
+                            defaultValue={
+                                inputData ? inputData.nextVisitDate : null
+                            }
+                            disabled={isEditOn ? false : true}
                         ></input>
                         <input
                             type="time"
                             id="nextVisitTime"
                             onChange={(ev) => handleChange(ev, 'nextVisitTime')}
+                            defaultValue={
+                                inputData ? inputData.nextVisitTime : null
+                            }
+                            disabled={isEditOn ? false : true}
                         ></input>
                     </InputWrapperRow>
 
-                    <ButtonWrapper>
-                        <button type="submit">Save</button>
-                    </ButtonWrapper>
+                    {!isEditOn ? (
+                        <ButtonWrapper>
+                            <button onClick={(ev) => handleEdit(ev, true)}>
+                                Edit
+                            </button>
+                        </ButtonWrapper>
+                    ) : (
+                        <ButtonWrapper>
+                            <button onClick={(ev) => handleEdit(ev, false)}>
+                                Cancel
+                            </button>
+                            <button>Save</button>
+                        </ButtonWrapper>
+                    )}
                 </form>
             </SubWrapper>
         </Wrapper>
@@ -190,6 +271,12 @@ const SubWrapper = styled.div`
 
         select {
             padding: 0.12rem;
+        }
+
+        input:disabled,
+        select:disabled {
+            background: none;
+            font-weight: bold;
         }
 
         #date {
@@ -244,6 +331,16 @@ const FileInputWrapper = styled.div`
             }
         }
 
+        button:disabled {
+            background-color: lightgrey;
+            cursor: not-allowed;
+
+            &:hover,
+            &:focus {
+                color: var(--main-font-color);
+                background-color: lightgrey;
+            }
+        }
         input {
             font-size: 100px;
             position: absolute;
@@ -327,4 +424,4 @@ const ButtonWrapper = styled.div`
     }
 `;
 
-export default VaccineAddDetail;
+export default VaccineEditDetail;

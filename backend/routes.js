@@ -15,6 +15,8 @@ const {
     addVet,
     addVaccine,
     getVaccine,
+    getSingleVaccine,
+    updateSingleVaccine,
 } = require('./handlers');
 
 router.post('/api/user', addUser);
@@ -34,6 +36,11 @@ router.post('/api/:userId/puppy/:puppyId/vet', addVet);
 
 router.post('/api/:userId/puppy/:puppyId/vaccine', addVaccine);
 router.get('/api/:userId/puppy/:puppyId/vaccine', getVaccine);
+router.get('/api/:userId/puppy/:puppyId/vaccine/:vaccineId', getSingleVaccine);
+router.put(
+    '/api/:userId/puppy/:puppyId/vaccine/:vaccineId',
+    updateSingleVaccine
+);
 
 router.get('*', (req, res) => {
     res.status(404).json({

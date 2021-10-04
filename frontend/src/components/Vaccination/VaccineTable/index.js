@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 import {
     useTable,
     useSortBy,
@@ -7,14 +9,35 @@ import {
     usePagination,
 } from 'react-table';
 
-import { VACCINE_COLUMN } from './vaccineColumn';
+import { getColumn } from './vaccineColumn';
 import './vaccineTable.css';
 import VaccineSearch from './VaccineSearch';
 // import VaccineFilter from './VaccineFilter';
 
-const VaccineTable = ({ vaccineData }) => {
-    const columns = useMemo(() => VACCINE_COLUMN, []);
-    const data = useMemo(() => vaccineData, []);
+const VaccineTable = ({
+    vaccineData,
+    isVaccineEditOpen,
+    setIsVaccineEditOpen,
+    setSelectedVaccine,
+}) => {
+    const handleMoreOpen = (ev, id) => {
+        setSelectedVaccine(id);
+        setIsVaccineEditOpen(true);
+    };
+
+    const columns = useMemo(
+        () => getColumn(handleMoreOpen),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    );
+    // const data = vaccineData;
+
+    const data = useMemo(
+        () => vaccineData,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [vaccineData]
+    );
+
     // const defaultColumn = useMemo(() => {
     //     return { Filter: VaccineFilter };
     // }, []);
@@ -38,6 +61,14 @@ const VaccineTable = ({ vaccineData }) => {
         {
             columns,
             data,
+            initialState: {
+                sortBy: [
+                    {
+                        id: 'date',
+                        desc: true,
+                    },
+                ],
+            },
             // defaultColumn,
         },
         // useFilters,
@@ -54,21 +85,38 @@ const VaccineTable = ({ vaccineData }) => {
             <VaccineSearch filter={globalFilter} setFilter={setGlobalFilter} />
             <table {...getTableProps()}>
                 <thead>
-                    {headerGroups.map((headerGroup) => (
-                        <tr {...headerGroup.getHeaderGroupProps}>
-                            {headerGroup.headers.map((column) => (
+                    {headerGroups.map((headerGroup, idx) => (
+                        <tr {...headerGroup.getHeaderGroupProps} key={idx}>
+                            {headerGroup.headers.map((column, i) => (
                                 <th
                                     {...column.getHeaderProps(
                                         column.getSortByToggleProps()
                                     )}
+                                    key={i}
                                 >
                                     {column.render('Header')}
                                     <span>
-                                        {column.isSorted
-                                            ? column.isSortedDesc
-                                                ? ' 🔽'
-                                                : ' 🔼'
-                                            : ''}
+                                        {column.isSorted ? (
+                                            column.isSortedDesc ? (
+                                                <FontAwesomeIcon
+                                                    icon={faSortDown}
+                                                    style={{
+                                                        color: 'grey',
+                                                        marginLeft: '0.25rem',
+                                                    }}
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={faSortUp}
+                                                    style={{
+                                                        color: 'grey',
+                                                        marginLeft: '0.25rem',
+                                                    }}
+                                                />
+                                            )
+                                        ) : (
+                                            ''
+                                        )}
                                     </span>
                                     {/* <div>
                                         {column.canFilter
@@ -81,14 +129,16 @@ const VaccineTable = ({ vaccineData }) => {
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {page.map((row) => {
+                    {page.map((row, idx) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map((cell) => {
+                            <tr {...row.getRowProps()} key={idx}>
+                                {row.cells.map((cell, i) => {
                                     return (
-                                        <td {...cell.getCellProps()}>
-                                            {cell.render('Cell')}
+                                        <td {...cell.getCellProps()} key={i}>
+                                            {cell.render('Cell', {
+                                                id: cell.row.original._id,
+                                            })}
                                         </td>
                                     );
                                 })}
@@ -97,7 +147,7 @@ const VaccineTable = ({ vaccineData }) => {
                     })}
                 </tbody>
             </table>
-            <div>
+            <div className="pagination">
                 <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {'<<'}
                 </button>
@@ -118,9 +168,8 @@ const VaccineTable = ({ vaccineData }) => {
                                 : 0;
                             gotoPage(pageNumber);
                         }}
-                        style={{ width: '50px' }}
-                    />
-                    <strong>of {pageOptions.length}</strong>{' '}
+                    />{' '}
+                    of {pageOptions.length}
                 </span>
                 <button onClick={() => nextPage()} disabled={!canNextPage}>
                     Next

@@ -543,6 +543,88 @@ const getVaccine = async (req, res) => {
     }
 };
 
+// GET pupppy single vaccine info
+const getSingleVaccine = async (req, res) => {
+    const { userId, puppyId, vaccineId } = req.params;
+
+    try {
+        const db = await connectMongo();
+
+        const findVaccine = await db
+            .collection(userId)
+            .findOne({ type: 'vaccine', puppyId: puppyId, _id: vaccineId });
+
+        if (!findVaccine) {
+            sendResponse(res, 400, puppyInfo, 'Single vaccine not found');
+        }
+
+        return sendResponse(res, 200, findVaccine);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with get puppy single vaccine request'
+        );
+    }
+};
+
+//// UPDATE pupppy single vaccine info
+const updateSingleVaccine = async (req, res) => {
+    const { userId, puppyId, vaccineId } = req.params;
+    const vaccine = req.body.data;
+
+    try {
+        // Upload file to Cloudinary
+        let uploadedRes;
+        if (vaccine.file) {
+            uploadedRes = await cloudinary.uploader.upload(vaccine.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['vaccine', puppyId],
+            });
+
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Vaccination file upload fail');
+        }
+
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateVaccine = await db.collection(userId).updateOne(
+            { type: 'vaccine', puppyId: puppyId, _id: vaccineId },
+            {
+                $set: {
+                    date: vaccine.date,
+                    vet: vaccine.vet,
+                    category: vaccine.category,
+                    name: vaccine.name,
+                    file: uploadedRes ? uploadedRes.secure_url : null,
+                    memo: vaccine.memo,
+                    nextVisitDate: vaccine.nextVisitDate,
+                    nextVisitTime: vaccine.nextVisitTime,
+                    update_at: moment().format(),
+                },
+            }
+        );
+        console.log('here');
+        assert.equal(1, updateVaccine.modifiedCount);
+
+        if (!updateVaccine.modifiedCount) {
+            sendResponse(res, 400, puppyInfo, 'Single vaccine update failed');
+        }
+
+        return sendResponse(res, 200, vaccine);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with update puppy single vaccine request'
+        );
+    }
+};
+
 module.exports = {
     addUser,
     addPuppy,
@@ -558,4 +640,6 @@ module.exports = {
     addVet,
     addVaccine,
     getVaccine,
+    getSingleVaccine,
+    updateSingleVaccine,
 };

@@ -2,25 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ModalWrapper, ModalSubWrapper } from '../../Styles';
-import VaccineAddDetail from './VaccineAddDetail';
+import VaccineEditDetail from './VaccineEditDetail';
 
 const VaccineAdd = ({
-    setIsVaccineAddOpen,
-    isVaccineAdded,
-    setIsVaccineAdded,
+    setIsVaccineEditOpen,
+    isVaccineEditted,
+    setIsVaccineEditted,
+    selectedVaccine,
 }) => {
     return (
         <ModalWrapper>
             <SubWrapper>
                 <button
                     className="close"
-                    onClick={() => setIsVaccineAddOpen(false)}
+                    onClick={() => setIsVaccineEditOpen(false)}
                 >
                     ⨉
                 </button>
-                <VaccineAddDetail
-                    isVaccineAdded={isVaccineAdded}
-                    setIsVaccineAdded={setIsVaccineAdded}
+                <VaccineEditDetail
+                    selectedVaccine={selectedVaccine}
+                    isVaccineEditted={isVaccineEditted}
+                    setIsVaccineEditted={setIsVaccineEditted}
                 />
             </SubWrapper>
         </ModalWrapper>
