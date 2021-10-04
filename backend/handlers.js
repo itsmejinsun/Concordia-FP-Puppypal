@@ -139,6 +139,7 @@ const getPuppy = async (req, res) => {
     }
 };
 
+// PUT(UPDATE) puppy data
 const putPuppy = async (req, res) => {
     const { userId, puppyId } = req.params;
     const { name, birthday, gender, breed } = req.body;
@@ -165,6 +166,7 @@ const putPuppy = async (req, res) => {
     }
 };
 
+// DELETE inactive puppy status
 const deletePuppy = async (req, res) => {
     const { userId, puppyId } = req.params;
 
@@ -184,6 +186,7 @@ const deletePuppy = async (req, res) => {
     }
 };
 
+// POST puppy profile picture
 const addProfilePic = async (req, res) => {
     const { userId, puppyId } = req.params;
     const profilePic = req.body.data;
@@ -200,9 +203,9 @@ const addProfilePic = async (req, res) => {
             tags: ['profile', puppyId],
         });
 
-        // Update profile picture url in MongoDB
         if (!uploadedRes) return;
 
+        // Update profile picture url in MongoDB
         const db = await connectMongo();
 
         const updateData = await db.collection(userId).updateOne(
@@ -226,6 +229,7 @@ const addProfilePic = async (req, res) => {
     }
 };
 
+// POST puppy microchip info
 const addMicrochip = async (req, res) => {
     const { userId, puppyId } = req.params;
 
@@ -276,6 +280,7 @@ const addMicrochip = async (req, res) => {
     }
 };
 
+// POST puppy pet license info
 const addLicense = async (req, res) => {
     const { userId, puppyId } = req.params;
 
@@ -328,6 +333,7 @@ const addLicense = async (req, res) => {
     }
 };
 
+// POST puppy spay(neuter) info
 const addSpay = async (req, res) => {
     const { userId, puppyId } = req.params;
 
@@ -378,6 +384,7 @@ const addSpay = async (req, res) => {
     }
 };
 
+// POST puppy insurance info
 const addInsurance = async (req, res) => {
     const { userId, puppyId } = req.params;
 
@@ -430,6 +437,7 @@ const addInsurance = async (req, res) => {
     }
 };
 
+// POST puppy vet info
 const addVet = async (req, res) => {
     const { userId, puppyId } = req.params;
 
@@ -462,6 +470,79 @@ const addVet = async (req, res) => {
     }
 };
 
+// POST puppy vaccine info
+const addVaccine = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    const vaccine = req.body.data;
+
+    try {
+        // Upload file to Cloudinary
+        let uploadedRes;
+        if (vaccine.file) {
+            uploadedRes = await cloudinary.uploader.upload(vaccine.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['vaccine', puppyId],
+            });
+
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Vaccination file upload fail');
+        }
+
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).insertOne({
+            _id: uuidv4(),
+            type: 'vaccine',
+            puppyId: puppyId,
+            date: vaccine.date,
+            vet: vaccine.vet,
+            category: vaccine.category,
+            name: vaccine.name,
+            file: uploadedRes ? uploadedRes.secure_url : null,
+            memo: vaccine.memo,
+            nextVisitDate: vaccine.nextVisitDate,
+            nextVisitTime: vaccine.nextVisitTime,
+            update_at: moment().format(),
+        });
+
+        return sendResponse(res, 200, vaccine);
+    } catch (err) {
+        sendResponse(res, 500, null, 'Error occured with post vaccine request');
+    }
+};
+
+// GET pupppy all vaccine info
+const getVaccine = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    try {
+        const db = await connectMongo();
+
+        const findAllVaccine = await db
+            .collection(userId)
+            .find({ type: 'vaccine', puppyId: puppyId })
+            .toArray();
+
+        if (!findAllVaccine) {
+            sendResponse(res, 400, puppyInfo, 'Vaccine list not found');
+        }
+
+        console.log('HERE');
+
+        return sendResponse(res, 200, findAllVaccine);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with get puppy all vaccine request'
+        );
+    }
+};
+
 module.exports = {
     addUser,
     addPuppy,
@@ -475,4 +556,6 @@ module.exports = {
     addSpay,
     addInsurance,
     addVet,
+    addVaccine,
+    getVaccine,
 };

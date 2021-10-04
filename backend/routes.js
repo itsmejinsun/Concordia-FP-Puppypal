@@ -13,6 +13,8 @@ const {
     addSpay,
     addInsurance,
     addVet,
+    addVaccine,
+    getVaccine,
 } = require('./handlers');
 
 router.post('/api/user', addUser);
@@ -29,6 +31,9 @@ router.post('/api/:userId/puppy/:puppyId/license', addLicense);
 router.post('/api/:userId/puppy/:puppyId/spay', addSpay);
 router.post('/api/:userId/puppy/:puppyId/insurance', addInsurance);
 router.post('/api/:userId/puppy/:puppyId/vet', addVet);
+
+router.post('/api/:userId/puppy/:puppyId/vaccine', addVaccine);
+router.get('/api/:userId/puppy/:puppyId/vaccine', getVaccine);
 
 router.get('*', (req, res) => {
     res.status(404).json({

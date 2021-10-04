@@ -7,6 +7,7 @@ import GlobalStyles from './GlobalStyles';
 import MainNav from './MainNav';
 import MenuNav from './MenuNav/index';
 import Home from './Home/index';
+import Vaccination from './Vaccination';
 import Profile from './Profile/index';
 import PuppyList from './PuppyList/index';
 import ProfilePicture from './Profile/ProfilePicture/index';
@@ -23,6 +24,9 @@ const App = () => {
                 <Switch>
                     <Route exact path="/">
                         <Home />
+                    </Route>
+                    <Route path="/vaccine">
+                        <Vaccination />
                     </Route>
                     <Route path="/profile">
                         <Profile />

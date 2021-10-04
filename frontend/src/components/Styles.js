@@ -233,7 +233,7 @@ export const InputWrapper = styled.div`
     }
 
     input {
-        max-width: 320px;
+        max-width: 280px;
         flex: 2;
         font-family: inherit;
         font-size: 1rem;
@@ -356,31 +356,11 @@ export const PuppyTopWrapper = styled.div`
 
     img.puppy {
         width: 100px;
-        transform: rotate(-45deg);
         position: relative;
         z-index: -1;
     }
 
     @media (min-width: 688px) {
         right: 90px;
-    }
-
-    div {
-        img {
-            width: 20px;
-        }
-
-        img.paw-left {
-            position: absolute;
-            top: 82px;
-            right: 70px;
-            z-index: 1;
-        }
-        img.paw-right {
-            position: absolute;
-            top: 82px;
-            right: 25px;
-            z-index: 1;
-        }
     }
 `;

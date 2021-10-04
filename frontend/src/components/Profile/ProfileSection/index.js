@@ -48,6 +48,7 @@ const ProfileSection = () => {
             handleUpdatePuppy(inputData);
             handleGetPuppy();
             setIsEditOn(false);
+            formEl.current.reset();
             return;
         }
 
@@ -68,7 +69,7 @@ const ProfileSection = () => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isPuppyChanged]);
+    }, [isPuppyChanged, isEditOn]);
 
     return (
         <Wrapper>
