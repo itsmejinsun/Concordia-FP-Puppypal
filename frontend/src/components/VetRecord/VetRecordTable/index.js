@@ -9,21 +9,21 @@ import {
     usePagination,
 } from 'react-table';
 
-import { getColumn } from './vaccineColumn';
-import './vaccineTable.css';
-import VaccineSearch from './VaccineSearch';
-// import VaccineFilter from './VaccineFilter';
+import { getColumn } from './vetRecordColumn';
+import './vetRecordTable.css';
+import VetRecordSearch from './VetRecordSearch';
+// import VetRecordFilter from './VetRecordFilter';
 
-const VaccineTable = ({
-    vaccineData,
-    isVaccineEditOpen,
-    setIsVaccineEditOpen,
-    setSelectedVaccine,
+const VetRecordTable = ({
+    vetRecordData,
+    isVetRecordEditOpen,
+    setIsVetRecordEditOpen,
+    setSelectedVetRecord,
 }) => {
     const handleMoreOpen = (ev, id) => {
-        setSelectedVaccine(id);
+        setSelectedVetRecord(id);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        setIsVaccineEditOpen(true);
+        setIsVetRecordEditOpen(true);
     };
 
     const columns = useMemo(
@@ -31,16 +31,16 @@ const VaccineTable = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
-    // const data = vaccineData;
+    // const data = vetRecordData;
 
     const data = useMemo(
-        () => vaccineData,
+        () => vetRecordData,
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [vaccineData]
+        [vetRecordData]
     );
 
     // const defaultColumn = useMemo(() => {
-    //     return { Filter: VaccineFilter };
+    //     return { Filter: VetRecordFilter };
     // }, []);
 
     const {
@@ -83,7 +83,10 @@ const VaccineTable = ({
 
     return (
         <>
-            <VaccineSearch filter={globalFilter} setFilter={setGlobalFilter} />
+            <VetRecordSearch
+                filter={globalFilter}
+                setFilter={setGlobalFilter}
+            />
             <table {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup, idx) => (
@@ -186,4 +189,4 @@ const VaccineTable = ({
     );
 };
 
-export default VaccineTable;
+export default VetRecordTable;

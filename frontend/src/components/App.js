@@ -7,7 +7,8 @@ import GlobalStyles from './GlobalStyles';
 import MainNav from './MainNav';
 import MenuNav from './MenuNav/index';
 import Home from './Home/index';
-import Vaccination from './Vaccination';
+import Vaccination from './Vaccination/index';
+import VetRecord from './VetRecord/index';
 import Profile from './Profile/index';
 import PuppyList from './PuppyList/index';
 import ProfilePicture from './Profile/ProfilePicture/index';
@@ -27,6 +28,9 @@ const App = () => {
                     </Route>
                     <Route path="/vaccine">
                         <Vaccination />
+                    </Route>
+                    <Route path="/vetrecord">
+                        <VetRecord />
                     </Route>
                     <Route path="/profile">
                         <Profile />

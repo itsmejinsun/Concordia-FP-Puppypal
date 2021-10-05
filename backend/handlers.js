@@ -625,6 +625,173 @@ const updateSingleVaccine = async (req, res) => {
     }
 };
 
+// POST puppy vet record info
+const addVetRecord = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    const vetRecord = req.body.data;
+
+    try {
+        // Upload file to Cloudinary
+        let uploadedRes;
+        if (vetRecord.file) {
+            uploadedRes = await cloudinary.uploader.upload(vetRecord.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['vetRecord', puppyId],
+            });
+
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Vet record file upload fail');
+        }
+
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateData = await db.collection(userId).insertOne({
+            _id: uuidv4(),
+            type: 'vetRecord',
+            puppyId: puppyId,
+            date: vetRecord.date,
+            vet: vetRecord.vet,
+            reason: vetRecord.reason,
+            memo: vetRecord.memo,
+            prescription: vetRecord.prescription,
+            medication: vetRecord.medication,
+            weight: vetRecord.weight,
+            file: uploadedRes ? uploadedRes.secure_url : null,
+            nextVisitDate: vetRecord.nextVisitDate,
+            nextVisitTime: vetRecord.nextVisitTime,
+            update_at: moment().format(),
+        });
+
+        return sendResponse(res, 200, vetRecord);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with post vet record request'
+        );
+    }
+};
+
+// GET pupppy all vet record info
+const getVetRecord = async (req, res) => {
+    const { userId, puppyId } = req.params;
+
+    try {
+        const db = await connectMongo();
+
+        const findAllVetRecord = await db
+            .collection(userId)
+            .find({ type: 'vetRecord', puppyId: puppyId })
+            .toArray();
+
+        if (!findAllVetRecord) {
+            sendResponse(res, 400, puppyInfo, 'Vet record list not found');
+        }
+
+        return sendResponse(res, 200, findAllVetRecord);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with get puppy all vet record request'
+        );
+    }
+};
+
+// GET pupppy single vet record info
+const getSingleVetRecord = async (req, res) => {
+    const { userId, puppyId, vetRecordId } = req.params;
+
+    try {
+        const db = await connectMongo();
+
+        const findVetRecord = await db
+            .collection(userId)
+            .findOne({ type: 'vetRecord', puppyId: puppyId, _id: vetRecordId });
+
+        if (!findVetRecord) {
+            sendResponse(res, 400, puppyInfo, 'Single vet record not found');
+        }
+
+        return sendResponse(res, 200, findVetRecord);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with get puppy single vet record request'
+        );
+    }
+};
+
+//// UPDATE pupppy single vaccine info
+const updateSingleVetRecord = async (req, res) => {
+    const { userId, puppyId, vetRecordId } = req.params;
+    const vetRecord = req.body.data;
+
+    try {
+        // Upload file to Cloudinary
+        let uploadedRes;
+        if (vetRecord.file) {
+            uploadedRes = await cloudinary.uploader.upload(vetRecord.file, {
+                upload_preset: 'puppypal',
+                format: 'png',
+                tags: ['vetRecord', puppyId],
+            });
+
+            if (!uploadedRes)
+                sendResponse(res, 400, null, 'Vet record file upload fail');
+        }
+
+        // Post data in MongoDB
+        const db = await connectMongo();
+
+        const updateVetRecord = await db.collection(userId).updateOne(
+            { type: 'vetRecord', puppyId: puppyId, _id: vetRecordId },
+            {
+                $set: {
+                    date: vetRecord.date,
+                    vet: vetRecord.vet,
+                    reason: vetRecord.reason,
+                    memo: vetRecord.memo,
+                    prescription: vetRecord.prescription,
+                    medication: vetRecord.medication,
+                    weight: vetRecord.weight,
+                    file: uploadedRes ? uploadedRes.secure_url : null,
+                    nextVisitDate: vetRecord.nextVisitDate,
+                    nextVisitTime: vetRecord.nextVisitTime,
+                    update_at: moment().format(),
+                },
+            }
+        );
+
+        assert.equal(1, updateVetRecord.modifiedCount);
+
+        if (!updateVetRecord.modifiedCount) {
+            sendResponse(
+                res,
+                400,
+                vetRecord,
+                'Single vet record update failed'
+            );
+        }
+
+        return sendResponse(res, 200, vetRecord);
+    } catch (err) {
+        sendResponse(
+            res,
+            500,
+            null,
+            'Error occured with update puppy single vet record request'
+        );
+    }
+};
+
 module.exports = {
     addUser,
     addPuppy,
@@ -642,4 +809,8 @@ module.exports = {
     getVaccine,
     getSingleVaccine,
     updateSingleVaccine,
+    addVetRecord,
+    getVetRecord,
+    getSingleVetRecord,
+    updateSingleVetRecord,
 };

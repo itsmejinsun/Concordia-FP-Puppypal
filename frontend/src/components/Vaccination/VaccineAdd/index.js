@@ -19,6 +19,7 @@ const VaccineAdd = ({
                     ⨉
                 </button>
                 <VaccineAddDetail
+                    setIsVaccineAddOpen={setIsVaccineAddOpen}
                     isVaccineAdded={isVaccineAdded}
                     setIsVaccineAdded={setIsVaccineAdded}
                 />

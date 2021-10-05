@@ -12,12 +12,16 @@ const initialState = {
     nextVisitTime: null,
 };
 
-const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
+const VaccineAddDetail = ({
+    setIsVaccineAddOpen,
+    isVaccineAdded,
+    setIsVaccineAdded,
+}) => {
     const [inputData, setInputData] = useState(initialState);
 
     // Function that will save input data
     const handleChange = (ev, key) => {
-        setInputData({ ...inputData, [key]: ev.target.value.trim() });
+        setInputData({ ...inputData, [key]: ev.target.value });
     };
 
     // Function that will save file input data
@@ -51,6 +55,7 @@ const VaccineAddDetail = ({ isVaccineAdded, setIsVaccineAdded }) => {
                 .then((res) => res.json())
                 .then((data) => {
                     setIsVaccineAdded(!isVaccineAdded);
+                    setIsVaccineAddOpen(false);
                 });
         }
     };

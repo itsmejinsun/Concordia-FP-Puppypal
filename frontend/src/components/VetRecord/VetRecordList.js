@@ -1,50 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import VaccineTable from './VaccineTable/index';
+import VetRecordTable from './VetRecordTable/index';
 
-const VaccineList = ({
-    isVaccineAddOpen,
-    setIsVaccineAddOpen,
-    isVaccineEditOpen,
-    setIsVaccineEditOpen,
-    setSelectedVaccine,
-    isVaccineAdded,
-    isVaccineEditted,
+const VetRecordList = ({
+    isVetRecordAddOpen,
+    setIsVetRecordAddOpen,
+    isVetRecordEditOpen,
+    setIsVetRecordEditOpen,
+    setSelectedVetRecord,
+    isVetRecordAdded,
+    isVetRecordEditted,
 }) => {
-    const [vaccineData, setVaccineData] = useState([]);
+    const [vetRecordData, setVetRecordData] = useState([]);
 
-    // Function that will open add vaccine modal
+    // Function that will open add vetRecord modal
     const handleClick = () => {
-        setIsVaccineAddOpen(true);
+        setIsVetRecordAddOpen(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Fetch selected puppy's all vaccine list
+    // Fetch selected puppy's all vetRecord list
     useEffect(() => {
         fetch(
             `/api/${localStorage.getItem('id')}/puppy/${localStorage.getItem(
                 'pup'
-            )}/vaccine`,
+            )}/vetRecord`,
             { method: 'GET' }
         )
             .then((res) => res.json())
             // .then((data) => console.log(data.data));
-            .then((data) => setVaccineData(data.data));
-    }, [isVaccineAdded, isVaccineEditted]);
+            .then((data) => setVetRecordData(data.data));
+    }, [isVetRecordAdded, isVetRecordEditted]);
 
     return (
         <div>
             <Header>
-                <h1>Vaccination</h1>
+                <h1>Vet Record</h1>
                 <button onClick={handleClick}>Add</button>
             </Header>
-            {vaccineData && vaccineData.length > 0 && (
-                <VaccineTable
-                    vaccineData={vaccineData}
-                    isVaccineEditOpen={isVaccineEditOpen}
-                    setIsVaccineEditOpen={setIsVaccineEditOpen}
-                    setSelectedVaccine={setSelectedVaccine}
+            {vetRecordData && vetRecordData.length > 0 && (
+                <VetRecordTable
+                    vetRecordData={vetRecordData}
+                    isVetRecordEditOpen={isVetRecordEditOpen}
+                    setIsVetRecordEditOpen={setIsVetRecordEditOpen}
+                    setSelectedVetRecord={setSelectedVetRecord}
                 />
             )}
         </div>
@@ -99,4 +99,4 @@ const Header = styled.div`
     }
 `;
 
-export default VaccineList;
+export default VetRecordList;
