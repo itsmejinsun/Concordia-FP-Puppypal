@@ -33,6 +33,7 @@ const VetRecordEditDetail = ({
     // Function that will open add medication modal
     const handleMed = (ev) => {
         ev.preventDefault();
+
         setIsMedOpen(true);
     };
 
@@ -136,7 +137,11 @@ const VetRecordEditDetail = ({
 
                         <TextareaWrapper>
                             <label htmlFor="medication">Medications</label>
-                            <button onClick={(ev) => handleMed(ev)}>Add</button>
+                            {isEditOn ? (
+                                <button onClick={(ev) => handleMed(ev)}>
+                                    Add
+                                </button>
+                            ) : null}
                             <MedList>
                                 {inputData.medication &&
                                     inputData.medication.map((med) => (
