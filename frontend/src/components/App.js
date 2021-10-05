@@ -10,6 +10,7 @@ import Home from './Home/index';
 import DailyCare from './DailyCare';
 import Vaccination from './Vaccination/index';
 import VetRecord from './VetRecord/index';
+import Library from './Library';
 import Profile from './Profile/index';
 import PuppyList from './PuppyList/index';
 import ProfilePicture from './Profile/ProfilePicture/index';
@@ -35,6 +36,9 @@ const App = () => {
                     </Route>
                     <Route path="/vetrecord">
                         <VetRecord />
+                    </Route>
+                    <Route path="/library">
+                        <Library />
                     </Route>
                     <Route path="/profile">
                         <Profile />
