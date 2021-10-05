@@ -1,10 +1,19 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const MainNav = () => {
+    const history = useHistory();
+
+    const handleClick = () => {
+        history.push('/');
+    };
+
     return (
         <Wrapper>
-            <LogoName>PUPPYPAL</LogoName>
+            <LogoName tabIndex="0" onClick={() => handleClick()}>
+                PUPPYPAL
+            </LogoName>
             <div></div>
         </Wrapper>
     );
@@ -20,5 +29,6 @@ const LogoName = styled.h1`
     color: var(--main-font-color);
     font-family: var(--logo-font);
     font-size: 2.2rem;
+    cursor: pointer;
 `;
 export default MainNav;
