@@ -58,6 +58,7 @@ const Drug = ({ isSelected }) => {
                         <input
                             type="text"
                             value={inputData}
+                            placeholder="Drug Name"
                             onChange={(ev) => setInputData(ev.target.value)}
                         />
                         <button>Search</button>
@@ -81,7 +82,7 @@ const Drug = ({ isSelected }) => {
                         </div>
                         {errorMsg && (
                             <div>
-                                <p>{errorMsg}</p>
+                                <p className="error">{errorMsg}</p>
                             </div>
                         )}
                     </Content>
@@ -244,6 +245,11 @@ const Content = styled.div`
         background-color: grey;
         opacity: 0.5;
         margin-top: 1rem;
+
+        p:hover {
+            cursor: initial;
+            font-weight: 400;
+        }
     }
 `;
 export default Drug;

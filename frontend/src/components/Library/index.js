@@ -6,6 +6,7 @@ import PuppyTop5 from './PuppyTop5';
 import DogBreed from './DogBreed';
 import Drug from './Drug';
 import Stage from './Stage';
+import HumanAge from './HumanAge';
 
 const initialState = {
     breed: false,
@@ -13,8 +14,10 @@ const initialState = {
     stage: false,
     humanAge: false,
 };
+
 const Library = () => {
     const [isSelected, setIsSelected] = useState(initialState);
+
     const onClick = (ev, key) => {
         setIsSelected({ [key]: true });
     };
@@ -53,7 +56,9 @@ const Library = () => {
                         tabIndex="0"
                         className={isSelected.humanAge ? 'active' : null}
                         onClick={(ev) => onClick(ev, 'humanAge')}
-                    ></Card>
+                    >
+                        <HumanAge isSelected={isSelected.humanAge} />
+                    </Card>
                 </CardWrapper>
             </SubWrapper>
         </Wrapper>

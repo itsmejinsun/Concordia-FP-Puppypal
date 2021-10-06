@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSeedling } from '@fortawesome/free-solid-svg-icons';
+import { faBaby } from '@fortawesome/free-solid-svg-icons';
 
-import bg from '../../assets/bg03.jpg';
-import { PUPPY_GROWTH_STAGE } from '../../assets/data';
+import bg from '../../assets/bg04.jpg';
+import { DOG_AGE_IN_HUMAN_YEAR } from '../../assets/data';
 
-const Stage = ({ isSelected }) => {
+const HumanAge = ({ isSelected }) => {
+    const [selectedSize, setSelectedSize] = useState(null);
     const [selectedAge, setSelectedAge] = useState(null);
+
+    const sizeList = Object.keys(DOG_AGE_IN_HUMAN_YEAR);
+    const ageList = Object.keys(DOG_AGE_IN_HUMAN_YEAR['Small(-20lb)']);
 
     // Reset select when other section is selected
     useEffect(() => {
         if (!isSelected) {
+            setSelectedSize('');
             setSelectedAge('');
         }
     }, [isSelected]);
@@ -20,21 +25,33 @@ const Stage = ({ isSelected }) => {
         <Wrapper>
             <SubWrapper className={isSelected ? 'active' : null}>
                 <Header className="header">
-                    <FontAwesomeIcon icon={faSeedling} className="icon" />
-                    <h2>Puppy Growth</h2>
+                    <FontAwesomeIcon icon={faBaby} className="icon" />
+                    <h2>In Human Age</h2>
                 </Header>
 
                 <>
                     <Select className={isSelected ? 'show' : null}>
                         <select
                             onClick={(ev) => ev.stopPropagation()}
+                            onChange={(ev) => setSelectedSize(ev.target.value)}
+                            value={!isSelected ? 'select' : selectedSize}
+                        >
+                            <option value="select">Size</option>
+                            {sizeList.map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            onClick={(ev) => ev.stopPropagation()}
                             onChange={(ev) => setSelectedAge(ev.target.value)}
                             value={!isSelected ? 'select' : selectedAge}
                         >
                             <option value="select">Age</option>
-                            {PUPPY_GROWTH_STAGE.map((age) => (
-                                <option key={age.age} value={age.age}>
-                                    {age.age}
+                            {ageList.map((age) => (
+                                <option key={age} value={age}>
+                                    {age}
                                 </option>
                             ))}
                         </select>
@@ -42,13 +59,18 @@ const Stage = ({ isSelected }) => {
 
                     {selectedAge ? (
                         <Content className={isSelected ? 'show' : null}>
-                            {PUPPY_GROWTH_STAGE.map((age) =>
-                                age.age === selectedAge ? (
-                                    <div>
-                                        <p>{age.content}</p>
-                                    </div>
-                                ) : null
-                            )}
+                            <div>
+                                <p>
+                                    Puppy's age in human years is...{' '}
+                                    <h1>
+                                        {
+                                            DOG_AGE_IN_HUMAN_YEAR[selectedSize][
+                                                selectedAge
+                                            ]
+                                        }
+                                    </h1>
+                                </p>
+                            </div>
                         </Content>
                     ) : null}
                 </>
@@ -155,6 +177,10 @@ const Select = styled.div`
         border-radius: 7.5px;
         text-align: center;
     }
+
+    select:nth-of-type(2) {
+        margin-left: 1rem;
+    }
 `;
 
 const Content = styled.div`
@@ -176,6 +202,11 @@ const Content = styled.div`
             margin: 0.25rem 0;
             line-height: 1.2rem;
         }
+
+        h1 {
+            color: #fff;
+            margin-top: 1rem;
+        }
     }
 `;
-export default Stage;
+export default HumanAge;

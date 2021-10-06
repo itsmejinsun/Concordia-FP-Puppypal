@@ -52,7 +52,7 @@ const DogBreed = ({ isSelected }) => {
                                     value="select"
                                     // selected={isOutFocus ? true : false}
                                 >
-                                    Select
+                                    Dog Breed
                                 </option>
 
                                 {dogApiData.map((breed) => (
