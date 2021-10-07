@@ -14,16 +14,20 @@ const SelectedPuppy = ({ isSigninOpen }) => {
         handleGetPuppy,
     } = useContext(PuppyContext);
 
+    // Reload(fetch) puppy's info When it is changed
     useEffect(() => {
         handleGetPuppy();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPuppyChanged]);
 
+    // Function that will handle when you click to see profile menu
     const handleClick = (ev) => {
         ev.preventDefault();
+
         setIsPuppyListOpen(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
     return (
         <Wrapper className={`${isSigninOpen}`}>
             {selectedPuppyInfo && (

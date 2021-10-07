@@ -10,6 +10,7 @@ const HumanAge = ({ isSelected }) => {
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedAge, setSelectedAge] = useState(null);
 
+    // Make array for select option list from data
     const sizeList = Object.keys(DOG_AGE_IN_HUMAN_YEAR);
     const ageList = Object.keys(DOG_AGE_IN_HUMAN_YEAR['Small(-20lb)']);
 

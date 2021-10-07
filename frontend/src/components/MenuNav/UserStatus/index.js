@@ -13,6 +13,7 @@ const UserStatus = ({ isSigninOpen }) => {
     const localUser = localStorage.getItem('id');
     const localPuppy = localStorage.getItem('pup');
 
+    // Fetch to POST user information to database
     useEffect(() => {
         if (user && user.sub !== localUser) {
             fetch('/api/user', {

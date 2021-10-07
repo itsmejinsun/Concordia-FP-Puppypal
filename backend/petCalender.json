@@ -1,0 +1,24 @@
+[
+    {
+        "january": {
+            "month": [
+                "Walk Your Pet Month",
+                "National Train Your Dog Month",
+                "Pet Obesity Awareness Month",
+                "Unchain a Dog Month",
+                "Adopt a Rescued Bird Month"
+            ],
+            "day": {
+                "02": [
+                    "National Pet Travel Safety Day",
+                    "Happy Mew Year for Cats Day"
+                ],
+                "08": ["National Labrador Retriever Day", "Bubble Bath Day"],
+                "14": ["National Dress up Your Pet Day"],
+                "22": ["National Answer Your Cat’s Question Day"],
+                "24": ["Change A Pet’s Life Day", "Peanut Butter Day"],
+                "29": ["Seeing Eye Guide Dog Anniversary"]
+            }
+        }
+    }
+]

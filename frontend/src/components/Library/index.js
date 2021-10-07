@@ -8,6 +8,8 @@ import Drug from './Drug';
 import Stage from './Stage';
 import HumanAge from './HumanAge';
 
+// Initial data to know which section is selected
+// To show the inputs and set styles
 const initialState = {
     breed: false,
     drug: false,
@@ -18,6 +20,7 @@ const initialState = {
 const Library = () => {
     const [isSelected, setIsSelected] = useState(initialState);
 
+    // Function that will change data of the state
     const onClick = (ev, key) => {
         setIsSelected({ [key]: true });
     };

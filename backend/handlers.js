@@ -4,6 +4,8 @@ const assert = require('assert');
 const moment = require('moment');
 const { v4: uuidv4 } = require('uuid');
 
+const { PET_HOLIDAY_MONTH, PET_HOLIDAY_DAYS } = require('./data.js');
+
 const {
     connectMongo,
     cloudinary,
@@ -530,8 +532,6 @@ const getVaccine = async (req, res) => {
             sendResponse(res, 400, puppyInfo, 'Vaccine list not found');
         }
 
-        console.log('HERE');
-
         return sendResponse(res, 200, findAllVaccine);
     } catch (err) {
         sendResponse(
@@ -607,7 +607,7 @@ const updateSingleVaccine = async (req, res) => {
                 },
             }
         );
-        console.log('here');
+
         assert.equal(1, updateVaccine.modifiedCount);
 
         if (!updateVaccine.modifiedCount) {
@@ -729,7 +729,7 @@ const getSingleVetRecord = async (req, res) => {
     }
 };
 
-//// UPDATE pupppy single vaccine info
+// UPDATE pupppy single vaccine info
 const updateSingleVetRecord = async (req, res) => {
     const { userId, puppyId, vetRecordId } = req.params;
     const vetRecord = req.body.data;
@@ -792,6 +792,36 @@ const updateSingleVetRecord = async (req, res) => {
     }
 };
 
+// GET pet all holiday list
+const getAllHoliday = async (req, res) => {
+    const result = PET_HOLIDAY_DAYS;
+
+    sendResponse(res, 200, result);
+};
+
+// GET pet holiday list by month
+const getHolidayByMonth = async (req, res) => {
+    const { month } = req.params;
+
+    const result = PET_HOLIDAY_MONTH[month];
+
+    sendResponse(res, 200, result);
+};
+
+// GET pet holiday list by day
+const getHolidayByDay = async (req, res) => {
+    const { day } = req.params;
+
+    const result = PET_HOLIDAY_DAYS[day];
+
+    if (!result) {
+        sendResponse(res, 200, []);
+        return;
+    }
+
+    sendResponse(res, 200, result);
+};
+
 module.exports = {
     addUser,
     addPuppy,
@@ -813,4 +843,7 @@ module.exports = {
     getVetRecord,
     getSingleVetRecord,
     updateSingleVetRecord,
+    getAllHoliday,
+    getHolidayByMonth,
+    getHolidayByDay,
 };

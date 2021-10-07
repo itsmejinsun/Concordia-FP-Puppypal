@@ -29,7 +29,6 @@ const VaccineList = ({
             { method: 'GET' }
         )
             .then((res) => res.json())
-            // .then((data) => console.log(data.data));
             .then((data) => setVaccineData(data.data));
     }, [isVaccineAdded, isVaccineEditted]);
 

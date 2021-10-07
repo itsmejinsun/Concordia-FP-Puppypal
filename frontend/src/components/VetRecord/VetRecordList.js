@@ -29,7 +29,6 @@ const VetRecordList = ({
             { method: 'GET' }
         )
             .then((res) => res.json())
-            // .then((data) => console.log(data.data));
             .then((data) => setVetRecordData(data.data));
     }, [isVetRecordAdded, isVetRecordEditted]);
 

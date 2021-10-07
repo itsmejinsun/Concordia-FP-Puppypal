@@ -5,6 +5,8 @@ import styled from 'styled-components';
 const MainNav = () => {
     const history = useHistory();
 
+    // Function that will handle route on logo
+    // When you click logo it will bring you to the home
     const handleClick = () => {
         history.push('/');
     };

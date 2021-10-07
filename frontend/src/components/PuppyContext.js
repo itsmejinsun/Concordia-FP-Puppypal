@@ -59,9 +59,6 @@ const PuppyProvider = ({ children }) => {
                 body: JSON.stringify(inputData),
             }
         ).then((res) => res.json());
-        // .then((data) => {
-        //     console.log(data);
-        // });
 
         return;
     };

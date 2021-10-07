@@ -32,6 +32,8 @@ const Drug = ({ isSelected }) => {
             .then((data) => setDrugApiData(data.results));
     };
 
+    // Function that will handle slected dug's monograph
+    // Monograph will be open in new window tab
     const handleClick = (ev) => {
         setErrorMsg('');
 
@@ -61,6 +63,7 @@ const Drug = ({ isSelected }) => {
                             placeholder="Drug Name"
                             onChange={(ev) => setInputData(ev.target.value)}
                         />
+
                         <button>Search</button>
                     </form>
                 </Input>

@@ -48,12 +48,7 @@ const DogBreed = ({ isSelected }) => {
                                 }
                                 value={!isSelected ? 'select' : selectedBreed}
                             >
-                                <option
-                                    value="select"
-                                    // selected={isOutFocus ? true : false}
-                                >
-                                    Dog Breed
-                                </option>
+                                <option value="select">Dog Breed</option>
 
                                 {dogApiData.map((breed) => (
                                     <option key={breed.id} value={breed.name}>
