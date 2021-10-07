@@ -45,7 +45,7 @@ const Stage = ({ isSelected }) => {
                             {PUPPY_GROWTH_STAGE.map((age) =>
                                 age.age === selectedAge ? (
                                     <div>
-                                        <p>{age.content}</p>
+                                        <p key={age.content}>{age.content}</p>
                                     </div>
                                 ) : null
                             )}

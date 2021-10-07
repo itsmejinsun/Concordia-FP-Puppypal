@@ -20,28 +20,26 @@ const VaccineTable = ({
     setIsVaccineEditOpen,
     setSelectedVaccine,
 }) => {
+    // Function that will open vaccine detail modal
     const handleMoreOpen = (ev, id) => {
         setSelectedVaccine(id);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setIsVaccineEditOpen(true);
     };
 
+    // Store react-table column data
     const columns = useMemo(
         () => getColumn(handleMoreOpen),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
-    // const data = vaccineData;
 
+    // Store puppy's vaccineData
     const data = useMemo(
         () => vaccineData,
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [vaccineData]
     );
-
-    // const defaultColumn = useMemo(() => {
-    //     return { Filter: VaccineFilter };
-    // }, []);
 
     const {
         getTableProps,

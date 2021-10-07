@@ -15,6 +15,7 @@ const ProfilePictureDetail = () => {
         setIsPuppyChanged,
     } = useContext(PuppyContext);
 
+    // Function that will store uploaded file into state
     const handleImgChange = (ev) => {
         const selected = ev.target.files[0];
         const fileType = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -27,6 +28,7 @@ const ProfilePictureDetail = () => {
         }
     };
 
+    // Function that will fetch to upload profile picture
     const handleSubmit = (ev) => {
         ev.preventDefault();
 

@@ -12,6 +12,7 @@ const PuppyProvider = ({ children }) => {
 
     const [selectedPuppyInfo, setSelectedPuppyInfo] = useState();
 
+    // Function that will fetch to get all dog breed list
     const handleGetGogBreed = () => {
         fetch('https://dog.ceo/api/breeds/list/all')
             .then((res) => res.json())
@@ -30,6 +31,7 @@ const PuppyProvider = ({ children }) => {
         return;
     };
 
+    // Function that will fetch to get selected dogs data
     const handleGetPuppy = () => {
         if (!localStorage.getItem('pup')) {
             setSelectedPuppyInfo('');
@@ -46,6 +48,7 @@ const PuppyProvider = ({ children }) => {
         return;
     };
 
+    // Funtion that will fetch to update selected dogs data
     const handleUpdatePuppy = (inputData) => {
         fetch(
             `/api/${localStorage.getItem('id')}/puppy/${localStorage.getItem(
@@ -63,6 +66,7 @@ const PuppyProvider = ({ children }) => {
         return;
     };
 
+    // Function that will fetch to delete puppy from list
     const handleDeletePuppy = () => {
         fetch(
             `/api/${localStorage.getItem('id')}/puppy/${localStorage.getItem(

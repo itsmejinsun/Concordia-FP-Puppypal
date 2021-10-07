@@ -48,6 +48,7 @@ const Insurance = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
         reader.readAsDataURL(selected);
     };
 
+    // Function that will change all input's disabled status
     const handleEditBtn = (ev, value) => {
         ev.preventDefault();
 

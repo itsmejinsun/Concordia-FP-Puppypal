@@ -24,6 +24,7 @@ const MoreSection = () => {
 
     const { selectedPuppyInfo } = useContext(PuppyContext);
 
+    // Function that will open modal of the each menu in more section
     const handleSelect = (menu) => {
         setIsMoreSectionOpen({ ...isMoreSectionOpen, [menu]: true });
         window.scrollTo({ top: 0, behavior: 'smooth' });

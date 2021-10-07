@@ -29,12 +29,11 @@ const Introduction = () => {
                     <h2>
                         Use <span>Puppypal</span>
                     </h2>
-                    <p>
-                        To keep your puppy’s all information in one place To
-                        manage your puppy’s documents easily To share your
-                        puppy’s information by email To check your puppy’s
-                        status To track your puppy’s daily activity
-                    </p>
+                    <p>To keep your puppy’s all information in one place </p>
+                    <p>To manage your puppy’s documents easily </p>
+                    <p>To share your puppy’s information </p>
+                    <p>To check your puppy’s status </p>
+                    <p>To track your puppy’s daily activity</p>
                 </Text>
                 <Img src={Boy} alt="hugging-dog-boy" />
             </Contents>

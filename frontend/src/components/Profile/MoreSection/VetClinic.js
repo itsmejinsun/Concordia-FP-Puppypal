@@ -34,6 +34,7 @@ const VetClinic = ({ isMoreSectionOpen, setIsMoreSectionOpen }) => {
         setVetData({ ...vetData, [item]: ev.target.value });
     };
 
+    // Function that will change input's disabled status
     const handleEditBtn = (ev, value) => {
         ev.preventDefault();
 

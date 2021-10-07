@@ -19,11 +19,13 @@ const AddPuppy = ({ setIsAddPuppyOpen }) => {
 
     const { dogBreed, handleGetGogBreed } = useContext(PuppyContext);
 
+    // Call fuction that will fetch dog breed list
     useEffect(() => {
         handleGetGogBreed();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    //Function that will fetch to post new puppy user
     const handleSubmit = (ev) => {
         ev.preventDefault();
 
