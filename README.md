@@ -16,7 +16,7 @@ While puppies never stop loving us, we want to make sure they have a healthy lif
 -   Check your puppy’s status
 -   Track your puppy’s daily activity
 
-### Sills and Technologies
+### Skills and Technologies
 
 Reactjs, Nodejs, MongoDb, Cloudinary
 
